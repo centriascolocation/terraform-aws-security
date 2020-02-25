@@ -27,3 +27,9 @@ variable "require_symbols" {
   type = bool
   default = true
 }
+
+variable "allow_users_to_change_password" {
+  description = "allow_users_to_change_password"
+  type = bool
+  default = true
+}
