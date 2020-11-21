@@ -27,6 +27,7 @@ This collection of reusable Terraform Modules aims to help with the following re
 ## Batteries (aka: modules) included
 
   * [iam-access-analyzer](modules/iam-access-analyzer/README.md)
+  * [iam-password-policy](modules/iam-password-policy/README.md)
 
 ## Requirements
 

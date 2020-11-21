@@ -15,10 +15,10 @@ validate:
   stage: validate
   script:
     - cd modules && terraform fmt -recursive -check -diff -list=true
-  allow_failure: true
+  allow_failure: false
 
 tfsec:
   stage: tfsec
   script:
     - tfsec modules/
-  allow_failure: true
+  allow_failure: false
