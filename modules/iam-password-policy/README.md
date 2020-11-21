@@ -42,7 +42,7 @@ Description: The number of previous passwords that users are prevented from reus
 
 Type: `number`
 
-Default: `2`
+Default: `5`
 
 ### require\_lowercase\_characters
 
