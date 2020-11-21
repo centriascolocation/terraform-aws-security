@@ -14,7 +14,7 @@ stages:
 validate:
   stage: validate
   script:
-    - cd terraform && terraform fmt -recursive -check -diff -list=true
+    - cd modules && terraform fmt -recursive -check -diff -list=true
 
 tfsec:
   stage: tfsec
