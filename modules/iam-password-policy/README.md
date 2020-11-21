@@ -36,6 +36,14 @@ Type: `number`
 
 Default: `20`
 
+### password\_reuse\_prevention
+
+Description: The number of previous passwords that users are prevented from reusing
+
+Type: `number`
+
+Default: `2`
+
 ### require\_lowercase\_characters
 
 Description: Whether lowercase chars are required
