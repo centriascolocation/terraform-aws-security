@@ -1,0 +1,23 @@
+image:
+  name: centriascolocation/dkr-terraform-tfsec:0.13.5
+  entrypoint:
+    - '/usr/bin/env'
+    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+
+before_script:
+  - terraform --version
+
+stages:
+  - validate
+  - tfsec
+
+validate:
+  stage: validate
+  script:
+    - cd terraform && terraform fmt -recursive -check -diff -list=true
+
+tfsec:
+  stage: tfsec
+  script:
+    - tfsec modules/
+  allow_failure: true
