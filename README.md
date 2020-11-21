@@ -1,3 +1,5 @@
+[![pipeline status master branch](https://gitlab.com/centrias/terraform-modules/terraform-aws-security/badges/master/pipeline.svg)](https://gitlab.com/centrias/terraform-modules/terraform-aws-security/-/commits/master)
+
 # Terraform AWS Security
 
 This collection of reusable Terraform Modules aims to help with the following recurring topics:
