@@ -9,11 +9,15 @@ This collection of reusable Terraform Modules aims to help with the following re
 
 ## Requirements
 
-Terraform Version 0.13 is required.
+Terraform Version 0.13 is required. It is recommended to use [pre-commit](https://pre-commit.com/) and its friends.
 
 ## Usage
 
-## Further Informations
+### Local Development
+
+Put new modules under the subdirectory `modules/`.
+
+## Further Information
 
 ### Authors
 
