@@ -40,7 +40,7 @@ Terraform Version 0.13 is required. It is recommended to use [pre-commit](https:
 
 ### Usage (private access to gitlab.com via SSH)
 
-> See [Examples](examples/README.md) for instructions.
+See [Examples](examples/README.md) for further instructions.
 
 ### Local Development
 
