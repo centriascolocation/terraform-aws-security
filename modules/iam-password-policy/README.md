@@ -28,6 +28,14 @@ Type: `bool`
 
 Default: `true`
 
+### max\_password\_age
+
+Description: The number of days that an user password is valid
+
+Type: `number`
+
+Default: `90`
+
 ### minimum\_password\_length
 
 Description: Minimum password length

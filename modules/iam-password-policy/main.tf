@@ -6,4 +6,5 @@ resource "aws_iam_account_password_policy" "iam_account_password_policy" {
   require_symbols                = var.require_symbols
   allow_users_to_change_password = var.allow_users_to_change_password
   password_reuse_prevention      = var.password_reuse_prevention
+  max_password_age               = var.max_password_age
 }

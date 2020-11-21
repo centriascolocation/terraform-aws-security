@@ -39,3 +39,9 @@ variable "password_reuse_prevention" {
   type        = number
   default     = 5
 }
+
+variable "max_password_age" {
+  description = "The number of days that an user password is valid"
+  type        = number
+  default     = 90
+}
