@@ -6,6 +6,7 @@
     - [Batteries (aka: modules) included](#batteries-aka-modules-included)
     - [Requirements](#requirements)
     - [Usage](#usage)
+        - [Usage (private access to gitlab.com via SSH)](#usage-private-access-to-gitlabcom-via-ssh)
         - [Local Development](#local-development)
     - [Further Information](#further-information)
         - [Authors](#authors)
@@ -34,6 +35,12 @@ This collection of reusable Terraform Modules aims to help with the following re
 Terraform Version 0.13 is required. It is recommended to use [pre-commit](https://pre-commit.com/) and its friends.
 
 ## Usage
+
+> Public access is planned in future, but not yet available.
+
+### Usage (private access to gitlab.com via SSH)
+
+> See [Examples](examples/README.md) for instructions.
 
 ### Local Development
 
