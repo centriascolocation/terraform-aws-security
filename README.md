@@ -14,7 +14,7 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-[![pipeline status master branch](https://gitlab.com/centrias/terraform-modules/terraform-aws-security/badges/master/pipeline.svg)](https://gitlab.com/centrias/terraform-modules/terraform-aws-security/-/commits/master)
+[![pipeline status master branch](https://gitlab.com/centrias/terraform-modules/terraform-aws-security/badges/master/pipeline.svg)](https://gitlab.com/centrias/terraform-modules/terraform-aws-security/-/commits/master) https://img.shields.io/badge/release-v1.1.0-green
 
 # Terraform AWS Security
 
@@ -60,6 +60,10 @@ You'll also need:
 ### Authors
 
   * Michael Krieg <michael@centrias.de>
+  * Volker Bohne <bohne@centrias.de>
+  * Christian Weirich <christian@centrias.de>
+  * Dirk Piethan <dirk@centrias.de>
+  * Jonas Ueberschaer <jonas@centrias.de>
 
 ### License
 
