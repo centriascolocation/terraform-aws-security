@@ -32,6 +32,7 @@ This collection of reusable Terraform Modules aims to help with the following re
   * [iam-access-analyzer](modules/iam-access-analyzer/README.md)
   * [iam-password-policy](modules/iam-password-policy/README.md)
   * [secure-s3-bucket](modules/secure-s3-bucket/README.md)
+  * [ebs-default-encryption](modules/ebs-default-encryption/README.md)
 
 ## Requirements
 
