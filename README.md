@@ -24,11 +24,14 @@ This collection of reusable Terraform Modules aims to help with the following re
     * CloudTrail
     * IAM
     * Config
+    * Security Hub
+    * Secure S3 Buckets (encrpyted, versioned, optional access logging)
 
 ## Batteries (aka: modules) included
 
   * [iam-access-analyzer](modules/iam-access-analyzer/README.md)
   * [iam-password-policy](modules/iam-password-policy/README.md)
+  * [secure-s3-bucket](modules/secure-s3-bucket/README.md)
 
 ## Requirements
 
