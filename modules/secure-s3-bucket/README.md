@@ -6,11 +6,15 @@ The following requirements are needed by this module:
 
 - aws (~> 3.0)
 
+- time (~> 0.6.0)
+
 ## Providers
 
 The following providers are used by this module:
 
 - aws (~> 3.0)
+
+- time (~> 0.6.0)
 
 ## Required Inputs
 

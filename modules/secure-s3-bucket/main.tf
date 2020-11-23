@@ -58,6 +58,11 @@ resource "aws_s3_bucket_policy" "access_log_policy" {
   policy = data.aws_iam_policy_document.access_log_policy[0].json
 }
 
+resource "time_sleep" "wait_for_access_log_bucket" {
+  depends_on      = [aws_s3_bucket.access_log]
+  create_duration = "5s"
+}
+
 resource "aws_s3_bucket_public_access_block" "access_log" {
   count = var.enabled ? 1 : 0
 
@@ -67,9 +72,11 @@ resource "aws_s3_bucket_public_access_block" "access_log" {
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
+
+  depends_on = [time_sleep.wait_for_access_log_bucket]
 }
 
-resource "aws_s3_bucket" "content" {
+resource "aws_s3_bucket" "secure_s3_bucket" {
   count = var.enabled ? 1 : 0
 
   bucket = var.bucket_name
@@ -90,10 +97,8 @@ resource "aws_s3_bucket" "content" {
   }
 
   versioning {
-    enabled = true
-    # Temporarily disabled due to Terraform issue.
-    # https://github.com/terraform-providers/terraform-provider-aws/issues/629
-    # mfa_delete = true
+    enabled    = true
+    mfa_delete = false
   }
 
   lifecycle_rule {
@@ -116,13 +121,20 @@ resource "aws_s3_bucket" "content" {
   tags = var.tags
 }
 
-resource "aws_s3_bucket_public_access_block" "content" {
+resource "time_sleep" "wait_for_secure_s3_bucket" {
+  depends_on      = [aws_s3_bucket.secure_s3_bucket]
+  create_duration = "5s"
+}
+
+resource "aws_s3_bucket_public_access_block" "secure_s3_bucket" {
   count = var.enabled ? 1 : 0
 
-  bucket = aws_s3_bucket.content[0].id
+  bucket = aws_s3_bucket.secure_s3_bucket[0].id
 
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
+
+  depends_on = [time_sleep.wait_for_secure_s3_bucket]
 }

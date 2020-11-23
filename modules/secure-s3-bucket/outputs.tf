@@ -1,6 +1,6 @@
 output "this_bucket" {
   description = "This S3 bucket."
-  value       = var.enabled ? aws_s3_bucket.content[0] : null
+  value       = var.enabled ? aws_s3_bucket.secure_s3_bucket[0] : null
 }
 
 output "log_bucket" {
