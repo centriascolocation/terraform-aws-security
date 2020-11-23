@@ -1,10 +1,10 @@
 variable "bucket_name" {
-  description = "The name of the S3 bucket"
+  description = "The name of the S3 bucket (3 - 63 characters long)"
   type        = string
 }
 
 variable "log_bucket_name" {
-  description = "The name of the S3 Logging bucket"
+  description = "The name of the S3 Logging bucket (3 - 63 characters long)"
   type        = string
 }
 

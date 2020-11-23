@@ -22,13 +22,13 @@ The following input variables are required:
 
 ### bucket\_name
 
-Description: The name of the S3 bucket
+Description: The name of the S3 bucket (3 - 63 characters long)
 
 Type: `string`
 
 ### log\_bucket\_name
 
-Description: The name of the S3 Logging bucket
+Description: The name of the S3 Logging bucket (3 - 63 characters long)
 
 Type: `string`
 
