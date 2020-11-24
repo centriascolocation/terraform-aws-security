@@ -2,6 +2,7 @@ data "aws_caller_identity" "current" {}
 
 resource "aws_s3_bucket_policy" "this" {
   bucket = var.bucket_name
+  depends_on      = [var.bucket_name]
   policy = <<POLICY
 {
     "Version": "2012-10-17",
