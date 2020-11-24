@@ -64,4 +64,12 @@ Default:
 
 ## Outputs
 
-No output.
+The following outputs are exported:
+
+### this\_s3\_bucket\_name
+
+Description: n/a
+
+### this\_trail\_name
+
+Description: n/a
