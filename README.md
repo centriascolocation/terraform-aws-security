@@ -25,7 +25,7 @@ This collection of reusable Terraform Modules aims to help with the following re
     * IAM
     * Config
     * Security Hub
-    * Secure S3 Buckets (encrpyted, versioned, optional access logging)
+    * Secure S3 Buckets (encrypted, versioned, optional access logging)
     * EBS Volume Encryption
 
 ## Batteries (aka: modules) included
