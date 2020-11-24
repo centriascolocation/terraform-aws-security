@@ -18,3 +18,17 @@ module "secure_bucket" {
   log_bucket_name = "${random_pet.rpet1.id}-logs"
 }
 
+# 1.: CloudTrail Bucket:
+module "test_secure_s3_bucket" {
+  source          = "./../modules/secure-s3-bucket"
+  bucket_name     = "test-251120-logs"
+  log_bucket_name = "test-251120-accesslogs"
+}
+
+# 2.: CloudTrail itself:
+module "test_cloudtrail" {
+  source                = "./../modules/cloudtrail"
+  trail_name            = "test-251120"
+  bucket_name           = "test-251120-logs"
+  cloudtrail_depends_on = [module.test_secure_s3_bucket.this_bucket]
+}
