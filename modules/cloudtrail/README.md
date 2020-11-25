@@ -68,8 +68,9 @@ The following outputs are exported:
 
 ### this\_s3\_bucket\_name
 
-Description: n/a
+Description: The S3 Bucketname which stores the CloudTrail logs
 
 ### this\_trail\_name
 
-Description: n/a
+Description: The name of the CloudTrail
+
