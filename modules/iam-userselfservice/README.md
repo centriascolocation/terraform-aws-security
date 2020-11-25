@@ -38,8 +38,8 @@ The following outputs are exported:
 
 ### this\_policy\_arn
 
-Description: n/a
+Description: the Policy ARN
 
 ### this\_policy\_name
 
-Description: n/a
+Description: the Policy Name
