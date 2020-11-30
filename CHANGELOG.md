@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+<a name="v1.4.1"></a>
+## [v1.4.1] - 2020-11-30
+
+- instructions on how to use this public modules collection
+
 <a name="v1.4.0"></a>
 ## [v1.4.0] - 2020-11-30
 

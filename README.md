@@ -44,7 +44,25 @@ Terraform Version 0.13 is required. It is recommended to use [pre-commit](https:
 
 ## Usage
 
-> Public access is planned in future, but not yet available.
+Since there is no root module, check the included submodules. 
+
+In general, to just get started, create a Terraform file (e.g.: `security-example.tf`) with the following content:
+
+```
+  module "security" {
+    source  = "centriascolocation/security/aws"
+    version = "1.4.0"
+  }
+```
+
+Example of using one module:
+
+```
+  module "security_iam-access-analyzer" {
+    source  = "centriascolocation/security/aws//modules/iam-access-analyzer"
+    version = "1.4.0"
+  }
+```
 
 ### Usage (private access to gitlab.com via SSH)
 
