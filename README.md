@@ -64,9 +64,9 @@ Example of using one module:
   }
 ```
 
-### Usage (private access to gitlab.com via SSH)
+### Examples
 
-See [Examples](examples/README.md) for further instructions.
+The [Examples](examples/) folder contains some basic configurations.
 
 ### Local Development
 
