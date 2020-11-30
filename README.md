@@ -6,7 +6,7 @@
     - [Batteries (aka: modules) included](#batteries-aka-modules-included)
     - [Requirements](#requirements)
     - [Usage](#usage)
-        - [Usage (private access to gitlab.com via SSH)](#usage-private-access-to-gitlabcom-via-ssh)
+        - [Examples](#examples)
         - [Local Development](#local-development)
     - [Further Information](#further-information)
         - [Authors](#authors)
