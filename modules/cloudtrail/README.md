@@ -73,4 +73,3 @@ Description: The S3 Bucketname which stores the CloudTrail logs
 ### this\_trail\_name
 
 Description: The name of the CloudTrail
-

@@ -35,7 +35,7 @@ This collection of reusable Terraform Modules aims to help with the following re
   * [secure-s3-bucket](modules/secure-s3-bucket/README.md)
   * [ebs-default-encryption](modules/ebs-default-encryption/README.md)
   * [cloudtrail](modules/cloudtrail/README.md)
-  
+
 ## Requirements
 
 Terraform Version 0.13 is required. It is recommended to use [pre-commit](https://pre-commit.com/) and its friends.
