@@ -27,6 +27,7 @@ This collection of reusable Terraform Modules aims to help with the following re
     * Security Hub
     * Secure S3 Buckets (encrypted, versioned, optional access logging)
     * EBS Volume Encryption
+    * IAM User Self Service Policy
 
 ## Batteries (aka: modules) included
 
@@ -35,6 +36,7 @@ This collection of reusable Terraform Modules aims to help with the following re
   * [secure-s3-bucket](modules/secure-s3-bucket/README.md)
   * [ebs-default-encryption](modules/ebs-default-encryption/README.md)
   * [cloudtrail](modules/cloudtrail/README.md)
+  * [iam-userselfservice](modules/iam-userselfservice/README.md)
 
 ## Requirements
 
