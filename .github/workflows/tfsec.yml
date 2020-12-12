@@ -1,5 +1,18 @@
-- name: Checkout
-  uses: actions/checkout@v2.3.4
+name: "tfsec"
 
-- name: Terraform security scan
-  uses: triat/terraform-security-scan@v2.0.2
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  tfsec:
+    name: "tfsec"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan
+        uses: triat/terraform-security-scan@v2.0.2
