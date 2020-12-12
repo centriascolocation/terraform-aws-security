@@ -3,18 +3,18 @@
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [Terraform AWS Security](#terraform-aws-security)
-    - [Batteries (aka: modules) included](#batteries-aka-modules-included)
-    - [Requirements](#requirements)
-    - [Usage](#usage)
-        - [Examples](#examples)
-        - [Local Development](#local-development)
-    - [Further Information](#further-information)
-        - [Authors](#authors)
-        - [License](#license)
+  - [Batteries (aka: modules) included](#batteries-aka-modules-included)
+  - [Requirements](#requirements)
+  - [Usage](#usage)
+    - [Examples](#examples)
+    - [Local Development](#local-development)
+  - [Further Information](#further-information)
+    - [Authors](#authors)
+    - [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-[![pipeline status master branch](https://gitlab.com/centrias/terraform-modules/terraform-aws-security/badges/master/pipeline.svg)](https://gitlab.com/centrias/terraform-modules/terraform-aws-security/-/commits/master)
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/centriascolocation/terraform-aws-security)
 
 # Terraform AWS Security
 
@@ -31,12 +31,12 @@ This collection of reusable Terraform Modules aims to help with the following re
 
 ## Batteries (aka: modules) included
 
-  * [iam-access-analyzer](modules/iam-access-analyzer/README.md)
-  * [iam-password-policy](modules/iam-password-policy/README.md)
-  * [secure-s3-bucket](modules/secure-s3-bucket/README.md)
-  * [ebs-default-encryption](modules/ebs-default-encryption/README.md)
-  * [cloudtrail](modules/cloudtrail/README.md)
-  * [iam-userselfservice](modules/iam-userselfservice/README.md)
+  * [iam-access-analyzer](https://github.com/centriascolocation/terraform-aws-security/tree/master/modules/iam-access-analyzer/README.md)
+  * [iam-password-policy](https://github.com/centriascolocation/terraform-aws-security/tree/master/modules/iam-password-policy/README.md)
+  * [secure-s3-bucket](https://github.com/centriascolocation/terraform-aws-security/tree/master/modules/secure-s3-bucket/README.md)
+  * [ebs-default-encryption](https://github.com/centriascolocation/terraform-aws-security/tree/master/modules/ebs-default-encryption/README.md)
+  * [cloudtrail](https://github.com/centriascolocation/terraform-aws-security/tree/master/modules/cloudtrail/README.md)
+  * [iam-userselfservice](https://github.com/centriascolocation/terraform-aws-security/tree/master/modules/iam-userselfservice/README.md)
 
 ## Requirements
 
@@ -44,7 +44,7 @@ Terraform Version 0.13 is required. It is recommended to use [pre-commit](https:
 
 ## Usage
 
-Since there is no root module, check the included submodules. 
+Since there is no root module, check the included submodules.
 
 In general, to just get started, create a Terraform file (e.g.: `security-example.tf`) with the following content:
 
@@ -66,7 +66,7 @@ Example of using one module:
 
 ### Examples
 
-The [Examples](examples/) folder contains some basic configurations.
+The [Examples](https://github.com/centriascolocation/terraform-aws-security/tree/master/examples) folder contains some basic configurations.
 
 ### Local Development
 
