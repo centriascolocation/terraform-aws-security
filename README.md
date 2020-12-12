@@ -1,3 +1,5 @@
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/centriascolocation/terraform-aws-security)
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
@@ -13,8 +15,6 @@
     - [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/centriascolocation/terraform-aws-security)
 
 # Terraform AWS Security
 
@@ -48,7 +48,7 @@ Since there is no root module, check the included submodules.
 
 In general, to just get started, create a Terraform file (e.g.: `security-example.tf`) with the following content:
 
-```
+```hcl
   module "security" {
     source  = "centriascolocation/security/aws"
     version = "1.4.0"
@@ -57,7 +57,7 @@ In general, to just get started, create a Terraform file (e.g.: `security-exampl
 
 Example of using one module:
 
-```
+```hcl
   module "security_iam-access-analyzer" {
     source  = "centriascolocation/security/aws//modules/iam-access-analyzer"
     version = "1.4.0"
