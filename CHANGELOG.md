@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+<a name="v1.4.3"></a>
+## [v1.4.3] - 2020-12-12
+
+- we moved to github.com
+
+<a name="v1.4.2"></a>
+## [v1.4.2] - 2020-11-30
+
+- examples restructured, documentation updated
+
 <a name="v1.4.1"></a>
 ## [v1.4.1] - 2020-11-30
 
