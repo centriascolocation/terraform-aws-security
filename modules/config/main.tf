@@ -42,10 +42,6 @@ resource "aws_s3_bucket" "config" {
     enabled = true
   }
 
-  lifecycle {
-    prevent_destroy = true
-  }
-
   lifecycle_rule {
     enabled = true
     prefix  = "${var.config_bucket_key_prefix}/"
