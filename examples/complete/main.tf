@@ -46,3 +46,16 @@ resource "aws_iam_group_policy_attachment" "iam_self_service_attach" {
   group      = aws_iam_group.iam_self_service_users.name
   policy_arn = module.test_iam_uss.this_policy_arn
 }
+
+# 3. Config
+module "test_config" {
+  source = "../../modules/config"
+  config_name = "test"
+  config_bucket_prefix = "test"
+  config_bucket_key_prefix = "config"
+  config_delivery_frequency = "Twelve_Hours"
+}
+module "test_config_rules" {
+  source = "../../modules/config-rule"
+  aws_config_configuration_recorder_config = module.test_config.aws_config_configuration_recorder_config
+}
