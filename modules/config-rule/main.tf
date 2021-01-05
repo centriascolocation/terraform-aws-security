@@ -7,7 +7,7 @@ resource "aws_config_config_rule" "root_account_mfa_enabled" {
     source_identifier = "ROOT_ACCOUNT_MFA_ENABLED"
   }
 
-  depends_on = [var.aws_config_configuration_recorder.config]
+  depends_on = [var.aws_config_configuration_recorder_id]
 }
 
 resource "aws_config_config_rule" "incoming_ssh_disabled" {
@@ -18,7 +18,7 @@ resource "aws_config_config_rule" "incoming_ssh_disabled" {
     source_identifier = "INCOMING_SSH_DISABLED"
   }
 
-  depends_on = [var.aws_config_configuration_recorder.config]
+  depends_on = [var.aws_config_configuration_recorder_id]
 }
 
 resource "aws_config_config_rule" "cloud_trail_enabled" {
@@ -29,5 +29,5 @@ resource "aws_config_config_rule" "cloud_trail_enabled" {
     source_identifier = "CLOUD_TRAIL_ENABLED"
   }
 
-  depends_on = [var.aws_config_configuration_recorder.config]
+  depends_on = [var.aws_config_configuration_recorder_id]
 }

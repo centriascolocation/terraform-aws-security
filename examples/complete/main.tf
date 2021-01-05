@@ -47,15 +47,22 @@ resource "aws_iam_group_policy_attachment" "iam_self_service_attach" {
   policy_arn = module.test_iam_uss.this_policy_arn
 }
 
+data "aws_caller_identity" "current" {}
+
 # 3. Config
 module "test_config" {
-  source = "../../modules/config"
-  config_name = "test"
-  config_bucket_prefix = "test"
-  config_bucket_key_prefix = "config"
+  source                    = "../../modules/config"
+  aws_account_id            = data.aws_caller_identity.current.account_id
+  config_name               = "test"
+  config_bucket_prefix      = "test"
+  config_bucket_key_prefix  = "config"
   config_delivery_frequency = "Twelve_Hours"
+  common_tags = {
+    Generator = "Terraform"
+    Module    = "aws.terraform.modules.config"
+  }
 }
 module "test_config_rules" {
-  source = "../../modules/config-rule"
-  aws_config_configuration_recorder_config = module.test_config.aws_config_configuration_recorder_config
+  source                               = "../../modules/config-rule"
+  aws_config_configuration_recorder_id = module.test_config.aws_config_configuration_recorder_id
 }

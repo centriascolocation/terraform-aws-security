@@ -1,3 +1,4 @@
-output "aws_config_configuration_recorder_config" {
-  value = aws_config_configuration_recorder.config
+output "aws_config_configuration_recorder_id" {
+  description = "Configuration of created config recorder resource"
+  value       = aws_config_configuration_recorder.config.id
 }
