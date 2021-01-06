@@ -3,9 +3,9 @@ variable "config_name" {
   default     = ""
   type        = string
 }
-variable "config_bucket_prefix" {
+variable "config_bucket_name_prefix" {
   description = "Prefix name for config bucket"
-  default     = "config"
+  default     = "config-"
   type        = string
 }
 variable "common_tags" {

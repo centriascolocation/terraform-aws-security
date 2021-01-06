@@ -35,7 +35,7 @@ resource "aws_iam_role_policy_attachment" "config" {
 #we do not need accesslogging for a service like Config.
 #tfsec:ignore:AWS002
 resource "aws_s3_bucket" "config" {
-  bucket_prefix = var.config_bucket_prefix
+  bucket_prefix = var.config_bucket_name_prefix
   acl           = "private"
 
   versioning {

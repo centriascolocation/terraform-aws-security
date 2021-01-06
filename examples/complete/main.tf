@@ -54,7 +54,7 @@ module "test_config" {
   source                    = "../../modules/config"
   aws_account_id            = data.aws_caller_identity.current.account_id
   config_name               = "test"
-  config_bucket_prefix      = "test"
+  config_bucket_name_prefix = "test-${data.aws_caller_identity.current.account_id}-config-"
   config_bucket_key_prefix  = "config"
   config_delivery_frequency = "Twelve_Hours"
   common_tags = {
