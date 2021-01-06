@@ -48,7 +48,7 @@ variable "config_rules" {
       }
     }
     EC2_SECURITY_GROUP_ATTACHED_TO_ENI = {
-      name = "EC2-SECURITY-GROUP-ATTACHED-TO-ENI"
+      name = "ec2-security-group-attached-to-eni"
       source = {
         owner             = "AWS"
         source_identifier = "EC2_SECURITY_GROUP_ATTACHED_TO_ENI"
@@ -58,7 +58,7 @@ variable "config_rules" {
       }
     }
     IAM_ROOT_ACCESS_KEY_CHECK = {
-      name = "IAM-ROOT-ACCESS-KEY-CHECK"
+      name = "iam-root-access-key-check"
       source = {
         owner             = "AWS"
         source_identifier = "IAM_ROOT_ACCESS_KEY_CHECK"
@@ -68,7 +68,7 @@ variable "config_rules" {
       }
     }
     MFA_ENABLED_FOR_IAM_CONSOLE_ACCESS = {
-      name = "MFA_ENABLED_FOR_IAM_CONSOLE_ACCESS"
+      name = "mfa-enabled-for-iam-console-access"
       source = {
         owner             = "AWS"
         source_identifier = "MFA_ENABLED_FOR_IAM_CONSOLE_ACCESS"
