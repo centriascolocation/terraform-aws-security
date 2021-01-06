@@ -71,16 +71,23 @@ resource "aws_s3_bucket" "config" {
   }
 }
 
+resource "time_sleep" "wait_for_bucket_created" {
+  depends_on      = [aws_s3_bucket.config]
+  create_duration = "5s"
+}
+
 resource "aws_s3_bucket_public_access_block" "config_bucket" {
   bucket                  = aws_s3_bucket.config.id
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
+  depends_on              = [time_sleep.wait_for_bucket_created]
 }
 
 resource "aws_s3_bucket_policy" "config_bucket_policy" {
-  bucket = aws_s3_bucket.config.id
+  bucket     = aws_s3_bucket.config.id
+  depends_on = [time_sleep.wait_for_bucket_created]
 
   policy = <<POLICY
 {
