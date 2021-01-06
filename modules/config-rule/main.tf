@@ -1,32 +1,14 @@
 ### Rules
-resource "aws_config_config_rule" "root_account_mfa_enabled" {
-  name = "root_account_mfa_enabled"
 
+resource "aws_config_config_rule" "config_rules" {
+  for_each = var.config_rules
+  name     = each.key
   source {
-    owner             = "AWS"
-    source_identifier = "ROOT_ACCOUNT_MFA_ENABLED"
+    owner             = each.value.source.owner
+    source_identifier = each.value.source.source_identifier
   }
-
-  depends_on = [var.aws_config_configuration_recorder_id]
-}
-
-resource "aws_config_config_rule" "incoming_ssh_disabled" {
-  name = "incoming_ssh_disabled"
-
-  source {
-    owner             = "AWS"
-    source_identifier = "INCOMING_SSH_DISABLED"
-  }
-
-  depends_on = [var.aws_config_configuration_recorder_id]
-}
-
-resource "aws_config_config_rule" "cloud_trail_enabled" {
-  name = "cloud_trail_enabled"
-
-  source {
-    owner             = "AWS"
-    source_identifier = "CLOUD_TRAIL_ENABLED"
+  scope {
+    compliance_resource_types = each.value.scope.compliance_resource_types
   }
 
   depends_on = [var.aws_config_configuration_recorder_id]
