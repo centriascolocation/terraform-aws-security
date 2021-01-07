@@ -59,13 +59,6 @@ resource "aws_s3_bucket_public_access_block" "config_bucket" {
   depends_on              = [time_sleep.wait_for_bucket_created]
 }
 
-resource "aws_s3_bucket_policy" "config_bucket_policy" {
-  bucket     = aws_s3_bucket.config.id
-  depends_on = [time_sleep.wait_for_bucket_created]
-
-  policy = data.aws_iam_policy_document.bucket_policy.json
-}
-
 resource "aws_config_configuration_recorder" "config" {
   name     = var.config_name
   role_arn = aws_iam_role.config.arn

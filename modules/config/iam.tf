@@ -23,6 +23,13 @@ data "aws_iam_policy_document" "assume_role_policy" {
   }
 }
 
+resource "aws_s3_bucket_policy" "config_bucket_policy" {
+  bucket     = aws_s3_bucket.config.id
+  depends_on = [time_sleep.wait_for_bucket_created]
+
+  policy = data.aws_iam_policy_document.bucket_policy.json
+}
+
 data "aws_iam_policy_document" "bucket_policy" {
   version = "2012-10-17"
   statement {
@@ -33,7 +40,7 @@ data "aws_iam_policy_document" "bucket_policy" {
       type        = "Service"
     }
     actions   = ["s3:GetBucketAcl"]
-    resources = ["aws_s3_bucket.config.arn"]
+    resources = [aws_s3_bucket.config.arn]
   }
 
   statement {
@@ -44,7 +51,7 @@ data "aws_iam_policy_document" "bucket_policy" {
       type        = "Service"
     }
     actions   = ["s3:ListBucket"]
-    resources = ["${aws_s3_bucket.config.arn}"]
+    resources = [aws_s3_bucket.config.arn]
   }
 
   statement {
