@@ -1,32 +1,6 @@
 ##
 ## AWS Config
 
-resource "aws_iam_role" "config" {
-  name = var.config_name
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "config.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-  ]
-}
-POLICY
-  tags = merge(
-    var.common_tags,
-    {
-      "Name" = var.config_name
-    },
-  )
-}
-
 resource "aws_iam_role_policy_attachment" "config" {
   role       = aws_iam_role.config.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWS_ConfigRole"
@@ -89,51 +63,7 @@ resource "aws_s3_bucket_policy" "config_bucket_policy" {
   bucket     = aws_s3_bucket.config.id
   depends_on = [time_sleep.wait_for_bucket_created]
 
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "AWSConfigBucketPermissionsCheck",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": [
-         "config.amazonaws.com"
-        ]
-      },
-      "Action": "s3:GetBucketAcl",
-      "Resource": "${aws_s3_bucket.config.arn}"
-    },
-    {
-      "Sid": "AWSConfigBucketExistenceCheck",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": [
-          "config.amazonaws.com"
-        ]
-      },
-      "Action": "s3:ListBucket",
-      "Resource": "${aws_s3_bucket.config.arn}"
-    },
-    {
-      "Sid": " AWSConfigBucketDelivery",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": [
-         "config.amazonaws.com"
-        ]
-      },
-      "Action": "s3:PutObject",
-      "Resource": "${aws_s3_bucket.config.arn}/${var.config_bucket_key_prefix}/AWSLogs/${var.aws_account_id}/Config/*",
-      "Condition": {
-        "StringEquals": {
-          "s3:x-amz-acl": "bucket-owner-full-control"
-        }
-      }
-    }
-  ]
-}
-POLICY
+  policy = data.aws_iam_policy_document.bucket_policy.json
 }
 
 resource "aws_config_configuration_recorder" "config" {
