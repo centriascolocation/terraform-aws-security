@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+<a name="v1.4.4"></a>
+## [v1.4.4] - 2021-01-08
+
+- added AWS Config and Security Hub Activation
+
 <a name="v1.4.3"></a>
 ## [v1.4.3] - 2020-12-12
 
