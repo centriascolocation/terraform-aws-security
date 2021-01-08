@@ -66,3 +66,8 @@ module "test_config_rules" {
   source                               = "../../modules/config-rule"
   aws_config_configuration_recorder_id = module.test_config.aws_config_configuration_recorder_id
 }
+
+# 4. Security Hub Activation
+module "security_hub" {
+  source = "../../modules/security_hub"
+}
