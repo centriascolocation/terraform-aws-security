@@ -1,5 +1,5 @@
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/centriascolocation/terraform-aws-security)
-![tfsec](https://github.com/centriascolocation/terraform-aws-security/workflows/tfsec/badge.svg)
+![CI](https://github.com/centriascolocation/terraform-aws-security/workflows/CI/badge.svg)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
