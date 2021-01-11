@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+<a name="v1.4.5"></a>
+## [v1.4.5] - 2021-01-08
+
+- make submodules usable again (were internal in Terraform Registry)
+
 <a name="v1.4.4"></a>
 ## [v1.4.4] - 2021-01-08
 
