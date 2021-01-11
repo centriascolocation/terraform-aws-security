@@ -1,0 +1,34 @@
+name: "CI"
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  terraform:
+    name: "Terraform"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.13.5
+
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -check -recursive
+
+  tfsec:
+    name: "tfsec"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform security scan
+        uses: triat/terraform-security-scan@v2.0.2
