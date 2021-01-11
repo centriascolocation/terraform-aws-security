@@ -18,7 +18,15 @@ No required input.
 
 ## Optional Inputs
 
-No optional input.
+The following input variables are optional (have default values):
+
+### enabled
+
+Description: Set to false will not enable Security Hub at all
+
+Type: `bool`
+
+Default: `true`
 
 ## Outputs
 
