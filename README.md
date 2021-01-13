@@ -27,7 +27,7 @@ This collection of reusable Terraform Modules aims to help with the following re
     * Config
     * Security Hub
     * Secure S3 Buckets (encrypted, versioned, optional access logging)
-    * EBS Volume Encryption
+    * EBS Volume Encryption enabled by default
     * IAM User Self Service Policy
 
 ## Batteries (aka: modules) included
@@ -38,21 +38,24 @@ This collection of reusable Terraform Modules aims to help with the following re
   * [ebs-default-encryption](https://github.com/centriascolocation/terraform-aws-security/tree/master/modules/ebs-default-encryption/README.md)
   * [cloudtrail](https://github.com/centriascolocation/terraform-aws-security/tree/master/modules/cloudtrail/README.md)
   * [iam-userselfservice](https://github.com/centriascolocation/terraform-aws-security/tree/master/modules/iam-userselfservice/README.md)
+  * [security_hub](https://github.com/centriascolocation/terraform-aws-security/tree/master/modules/security_hub/README.md)
 
 ## Requirements
 
-Terraform Version 0.13 is required. It is recommended to use [pre-commit](https://pre-commit.com/) and its friends.
+Terraform Version 0.13 is required.
 
 ## Usage
 
 Since there is no root module, check the included submodules.
+
+_Hint_: Omit the version attribute to use the most recent `master` branch.
 
 In general, to just get started, create a Terraform file (e.g.: `security-example.tf`) with the following content:
 
 ```hcl
   module "security" {
     source  = "centriascolocation/security/aws"
-    version = "1.4.0"
+    version = "~> 1.4"
   }
 ```
 
@@ -61,7 +64,7 @@ Example of using one module:
 ```hcl
   module "security_iam-access-analyzer" {
     source  = "centriascolocation/security/aws//modules/iam-access-analyzer"
-    version = "1.4.0"
+    version = "~> 1.4"
   }
 ```
 
@@ -70,6 +73,14 @@ Example of using one module:
 The [Examples](https://github.com/centriascolocation/terraform-aws-security/tree/master/examples) folder contains some basic configurations.
 
 ### Local Development
+
+It is recommended to use [pre-commit](https://pre-commit.com/) and its friends.
+
+For the first time, setup pre-commit hooks like so:
+
+```
+  pre-commit install
+```
 
 Put new modules under the subdirectory `modules/`.
 
