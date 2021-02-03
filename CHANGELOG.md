@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+<a name="v1.4.6"></a>
+## [v1.4.6] - 2021-02-03
+
+- added support for the three Standard AWS Security Hub Standard Subscriptions
+
 <a name="v1.4.5"></a>
 ## [v1.4.5] - 2021-01-08
 
