@@ -69,5 +69,5 @@ module "test_config_rules" {
 
 # 4. Security Hub Activation
 module "security_hub" {
-  source = "../../modules/security_hub"
+  source = "../../modules/security-hub"
 }

@@ -38,7 +38,7 @@ This collection of reusable Terraform Modules aims to help with the following re
   * [ebs-default-encryption](https://github.com/centriascolocation/terraform-aws-security/tree/master/modules/ebs-default-encryption/README.md)
   * [cloudtrail](https://github.com/centriascolocation/terraform-aws-security/tree/master/modules/cloudtrail/README.md)
   * [iam-userselfservice](https://github.com/centriascolocation/terraform-aws-security/tree/master/modules/iam-userselfservice/README.md)
-  * [security_hub](https://github.com/centriascolocation/terraform-aws-security/tree/master/modules/security_hub/README.md)
+  * [security-hub](https://github.com/centriascolocation/terraform-aws-security/tree/master/modules/security-hub/README.md)
 
 ## Requirements
 
