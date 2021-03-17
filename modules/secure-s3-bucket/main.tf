@@ -48,7 +48,12 @@ resource "aws_s3_bucket" "access_log" {
     }
   }
 
-  tags = var.tags
+  tags = merge(
+    var.tags,
+    {
+      "Name" = var.log_bucket_name
+    }
+  )
 }
 
 resource "aws_s3_bucket_policy" "access_log_policy" {
@@ -118,7 +123,12 @@ resource "aws_s3_bucket" "secure_s3_bucket" {
     }
   }
 
-  tags = var.tags
+  tags = merge(
+    var.tags,
+    {
+      "Name" = var.bucket_name
+    }
+  )
 }
 
 resource "time_sleep" "wait_for_secure_s3_bucket" {
