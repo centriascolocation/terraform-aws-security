@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+<a name="v1.4.7"></a>
+## [v1.4.7] - 2021-03-17
+
+- missing S3 Bucket Name Tag added - [#7](https://github.com/centriascolocation/terraform-aws-security/issues/7)
+- wiped tfsec from github actions (will soon move to checkov)
+- start validating modules one by one in CI
+
 <a name="v1.4.6"></a>
 ## [v1.4.6] - 2021-02-03
 
