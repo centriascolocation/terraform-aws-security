@@ -1,5 +1,5 @@
 data "aws_iam_policy_document" "access_log_policy" {
-  count = var.enabled ? 1 : 0
+  count = var.log_bucket_name != "" ? 1 : 0
 
   statement {
     actions = ["s3:*"]
@@ -21,7 +21,7 @@ data "aws_iam_policy_document" "access_log_policy" {
 }
 
 resource "aws_s3_bucket" "access_log" {
-  count = var.enabled ? 1 : 0
+  count = var.log_bucket_name != "" ? 1 : 0
 
   bucket = var.log_bucket_name
 
@@ -57,7 +57,7 @@ resource "aws_s3_bucket" "access_log" {
 }
 
 resource "aws_s3_bucket_policy" "access_log_policy" {
-  count = var.enabled ? 1 : 0
+  count = var.log_bucket_name != "" ? 1 : 0
 
   bucket = aws_s3_bucket.access_log[0].id
   policy = data.aws_iam_policy_document.access_log_policy[0].json
@@ -69,7 +69,7 @@ resource "time_sleep" "wait_for_access_log_bucket" {
 }
 
 resource "aws_s3_bucket_public_access_block" "access_log" {
-  count = var.enabled ? 1 : 0
+  count = var.log_bucket_name != "" ? 1 : 0
 
   bucket = aws_s3_bucket.access_log[0].id
 
@@ -97,8 +97,13 @@ resource "aws_s3_bucket" "secure_s3_bucket" {
     }
   }
 
-  logging {
-    target_bucket = aws_s3_bucket.access_log[0].id
+  dynamic "logging" {
+    for_each = length(keys(var.logging)) == 0 ? [] : [var.logging]
+
+    content {
+      target_bucket = logging.value.target_bucket
+      target_prefix = lookup(logging.value, "target_prefix", null)
+    }
   }
 
   versioning {

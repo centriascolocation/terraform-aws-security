@@ -6,6 +6,13 @@ variable "bucket_name" {
 variable "log_bucket_name" {
   description = "The name of the S3 Logging bucket (3 - 63 characters long)"
   type        = string
+  default     = ""
+}
+
+variable "logging" {
+  description = "Bucket Access Logging configuration. (map)"
+  type        = map(string)
+  default     = {}
 }
 
 variable "lifecycle_glacier_transition_days" {
@@ -31,6 +38,6 @@ variable "tags" {
   default = {
     Generator = "Terraform"
   }
-  type = map
+  type = map(any)
 
 }
