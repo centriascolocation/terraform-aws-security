@@ -1,6 +1,6 @@
 # Examples
 
-You can use these private modules as follows:
+You can use these modules as follows:
 
 ```
 
