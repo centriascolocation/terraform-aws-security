@@ -10,7 +10,7 @@ You can use this module as follows:
 
 ```
 
-See [main.tf](main.tf) for details!
+See [main.tf](https://github.com/centriascolocation/terraform-aws-security/blob/master/examples/secure-s3-buckets/main.tf) for details!
 
 ### See also
 

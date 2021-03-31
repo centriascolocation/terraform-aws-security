@@ -10,7 +10,7 @@ You can use these modules as follows:
 
 ```
 
-See [main.tf](main.tf) for details!
+See [main.tf](https://github.com/centriascolocation/terraform-aws-security/blob/master/examples/complete/main.tf) for details!
 
 ### See also
 
