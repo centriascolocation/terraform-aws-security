@@ -5,5 +5,5 @@ output "this_bucket" {
 
 output "log_bucket" {
   description = "The S3 bucket used for storing access logs of this bucket."
-  value       = var.enabled ? aws_s3_bucket.access_log[0] : null
+  value       = var.log_bucket_name != "" ? aws_s3_bucket.access_log[0] : null
 }
