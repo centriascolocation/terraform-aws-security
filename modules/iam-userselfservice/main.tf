@@ -9,42 +9,58 @@ data "aws_iam_policy_document" "this" {
 
   version = "2012-10-17"
   statement {
-    sid    = "AllowViewAccountInfo"
-    effect = "Allow"
+    sid       = "AllowViewAccountInfo"
+    effect    = "Allow"
+    resources = ["*"]
+
     actions = [
       "iam:GetAccountPasswordPolicy",
-      "iam:GetAccountSummary",
+      "iam:ListVirtualMFADevices",
     ]
-    resources = ["*"]
   }
+
   statement {
-    sid    = "AllowManageOwnPasswords"
-    effect = "Allow"
+    sid       = "AllowManageOwnPasswords"
+    effect    = "Allow"
+    resources = ["arn:aws:iam::*:user/$${aws:username}"]
+
     actions = [
       "iam:ChangePassword",
       "iam:GetUser",
     ]
-    resources = [
-      "arn:aws:iam::*:user/$${aws:username}",
-    ]
   }
+
   statement {
-    sid    = "IAMAccessKeyPolicy"
-    effect = "Allow"
+    sid       = "AllowManageOwnAccessKeys"
+    effect    = "Allow"
+    resources = ["arn:aws:iam::*:user/$${aws:username}"]
+
     actions = [
       "iam:CreateAccessKey",
       "iam:DeleteAccessKey",
-      "iam:UpdateAccessKey",
-      "iam:GetAccessKeyLastUsed",
       "iam:ListAccessKeys",
-    ]
-    resources = [
-      "arn:aws:iam::*:user/$${aws:username}",
+      "iam:UpdateAccessKey",
     ]
   }
+
   statement {
-    sid    = "AllowManageOwnSSHPublicKeys"
-    effect = "Allow"
+    sid       = "AllowManageOwnSigningCertificates"
+    effect    = "Allow"
+    resources = ["arn:aws:iam::*:user/$${aws:username}"]
+
+    actions = [
+      "iam:DeleteSigningCertificate",
+      "iam:ListSigningCertificates",
+      "iam:UpdateSigningCertificate",
+      "iam:UploadSigningCertificate",
+    ]
+  }
+
+  statement {
+    sid       = "AllowManageOwnSSHPublicKeys"
+    effect    = "Allow"
+    resources = ["arn:aws:iam::*:user/$${aws:username}"]
+
     actions = [
       "iam:DeleteSSHPublicKey",
       "iam:GetSSHPublicKey",
@@ -52,33 +68,65 @@ data "aws_iam_policy_document" "this" {
       "iam:UpdateSSHPublicKey",
       "iam:UploadSSHPublicKey",
     ]
-    resources = [
-      "arn:aws:iam::*:user/$${aws:username}",
+  }
+
+  statement {
+    sid       = "AllowManageOwnGitCredentials"
+    effect    = "Allow"
+    resources = ["arn:aws:iam::*:user/$${aws:username}"]
+
+    actions = [
+      "iam:CreateServiceSpecificCredential",
+      "iam:DeleteServiceSpecificCredential",
+      "iam:ListServiceSpecificCredentials",
+      "iam:ResetServiceSpecificCredential",
+      "iam:UpdateServiceSpecificCredential",
     ]
   }
+
   statement {
-    sid    = "AllowMFADeviceHandling"
-    effect = "Allow"
+    sid       = "AllowManageOwnVirtualMFADevice"
+    effect    = "Allow"
+    resources = ["arn:aws:iam::*:mfa/$${aws:username}"]
+
+    actions = [
+      "iam:CreateVirtualMFADevice",
+      "iam:DeleteVirtualMFADevice",
+    ]
+  }
+
+  statement {
+    sid       = "AllowManageOwnUserMFA"
+    effect    = "Allow"
+    resources = ["arn:aws:iam::*:user/$${aws:username}"]
+
     actions = [
       "iam:DeactivateMFADevice",
-      "iam:DeleteVirtualMFADevice",
       "iam:EnableMFADevice",
-      "iam:ResyncMFADevice",
-      "iam:CreateVirtualMFADevice",
       "iam:ListMFADevices",
-    ]
-    resources = [
-      "arn:aws:iam::*:mfa/$${aws:username}",
+      "iam:ResyncMFADevice",
     ]
   }
+
   statement {
-    sid    = "AllowMFAListing"
-    effect = "Allow"
-    actions = [
+    sid       = "DenyAllExceptListedIfNoMFA"
+    effect    = "Deny"
+    resources = ["*"]
+
+    not_actions = [
+      "iam:CreateVirtualMFADevice",
+      "iam:EnableMFADevice",
+      "iam:GetUser",
+      "iam:ListMFADevices",
       "iam:ListVirtualMFADevices",
+      "iam:ResyncMFADevice",
+      "sts:GetSessionToken",
     ]
-    resources = [
-      "*",
-    ]
+
+    condition {
+      test     = "BoolIfExists"
+      variable = "aws:MultiFactorAuthPresent"
+      values   = ["false"]
+    }
   }
 }
