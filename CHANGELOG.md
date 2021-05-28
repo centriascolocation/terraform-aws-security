@@ -2,10 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+<a name="v1.5.1"></a>
+## [v1.5.1] - 2021-05-28
+
+- Cloudtrail and AWS Organizations - [#15](https://github.com/centriascolocation/terraform-aws-security/pull/15)
+- Update IAM User Self Service Policy - [#14](https://github.com/centriascolocation/terraform-aws-security/pull/14)
+
 <a name="v1.5.0"></a>
 ## [v1.5.0] - 2021-03-31
 
-- Creation of Access Log Bucket is now configurable (optional)- [#5](https://github.com/centriascolocation/terraform-aws-security/issues/5)
+- Creation of Access Log Bucket is now configurable (optional) - [#5](https://github.com/centriascolocation/terraform-aws-security/issues/5)
 - Examples enhanced: how to use the secure-s3-bucket module
 
 <a name="v1.4.7"></a>
