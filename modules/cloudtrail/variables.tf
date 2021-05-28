@@ -20,11 +20,11 @@ variable "tags" {
   default = {
     Generator = "Terraform"
   }
-  type = map
+  type = map(any)
 }
 
 variable "cloudtrail_depends_on" {
   description = "External resources which should be set up before CloudTrail, e.g. the Secure S3 Bucket"
   default     = []
-  type        = list
+  type        = list(any)
 }
