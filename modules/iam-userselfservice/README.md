@@ -1,3 +1,7 @@
+## General Information
+
+> https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_aws_my-sec-creds-self-manage.html
+
 ## Requirements
 
 The following requirements are needed by this module:
