@@ -39,7 +39,7 @@ data "aws_iam_policy_document" "account_only_bucket_policy" {
 
 data "aws_iam_policy_document" "organizations_bucket_policy" {
   statement {
-    sid       = "AWSCloudTrailAclCheck20150319"
+    sid       = "AWSCloudTrailAclCheck20210409"
     effect    = "Allow"
     resources = ["arn:aws:s3:::${var.bucket_name}"]
     actions   = ["s3:GetBucketAcl"]
@@ -51,7 +51,7 @@ data "aws_iam_policy_document" "organizations_bucket_policy" {
   }
 
   statement {
-    sid       = "AWSCloudTrailWrite20150319"
+    sid       = "AWSCloudTrailWrite2021040916"
     effect    = "Allow"
     resources = ["arn:aws:s3:::${var.bucket_name}/AWSLogs/${data.aws_organizations_organization.organization.master_account_id}/*"]
     actions   = ["s3:PutObject"]
@@ -69,7 +69,7 @@ data "aws_iam_policy_document" "organizations_bucket_policy" {
   }
 
   statement {
-    sid       = "AWSCloudTrailWrite20150319"
+    sid       = "AWSCloudTrailWrite2021040917"
     effect    = "Allow"
     resources = ["arn:aws:s3:::${var.bucket_name}/AWSLogs/${data.aws_organizations_organization.organization.id}/*"]
     actions   = ["s3:PutObject"]
