@@ -38,3 +38,10 @@ jobs:
         run: |
           terraform init -backend=false
           terraform validate
+
+      - name: Terraform Validate modules/cloudtrail
+        id: validate-cloudtrail
+        working-directory: modules/cloudtrail
+        run: |
+          terraform init -backend=false
+          terraform validate
