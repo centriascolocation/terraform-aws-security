@@ -108,7 +108,7 @@ resource "aws_s3_bucket" "secure_s3_bucket" {
 
   versioning {
     enabled    = true
-    mfa_delete = false
+    mfa_delete = var.mfa_delete
   }
 
   lifecycle_rule {

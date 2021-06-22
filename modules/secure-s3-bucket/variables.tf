@@ -39,5 +39,10 @@ variable "tags" {
     Generator = "Terraform"
   }
   type = map(any)
+}
 
+variable "mfa_delete" {
+  description = "Forces deletion of object to identities with mfa auth. Only the bucket owner (root account) can enable MFA delete"
+  default     = false
+  type        = bool
 }
