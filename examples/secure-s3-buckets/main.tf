@@ -18,5 +18,12 @@ data "aws_caller_identity" "current" {}
 module "s3_bucket_with_lifecycle" {
   source      = "../../modules/secure-s3-bucket"
   bucket_name = "secure-bucket-lifecycle-${data.aws_caller_identity.current.account_id}"
-
+  lifecycle_rule_current_version = {
+    days          = 60
+    storage_class = "STANDARD_IA"
+  }
+  lifecycle_rule_noncurrent_version = {
+    days          = 365
+    storage_class = "GLACIER"
+  }
 }

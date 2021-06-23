@@ -46,3 +46,21 @@ variable "mfa_delete" {
   default     = false
   type        = bool
 }
+
+variable "lifecycle_rule_current_version" {
+  description = "change storage class after days for current objects"
+  type        = map(string)
+  default = {
+    days          = 90
+    storage_class = "GLACIER"
+  }
+}
+
+variable "lifecycle_rule_noncurrent_version" {
+  description = "change storage class after days for non-current objects (older versions)"
+  type        = map(string)
+  default = {
+    days          = 90
+    storage_class = "GLACIER"
+  }
+}

@@ -114,17 +114,25 @@ resource "aws_s3_bucket" "secure_s3_bucket" {
   lifecycle_rule {
     id      = "auto-archive"
     enabled = true
+    prefix  = "/"
 
-    prefix = "/"
+    dynamic "transition" {
+      for_each = length(keys(var.lifecycle_rule_current_version)) == 0 ? [] : [
+      var.lifecycle_rule_current_version]
 
-    transition {
-      days          = var.lifecycle_glacier_transition_days
-      storage_class = "GLACIER"
+      content {
+        days          = transition.value.days
+        storage_class = transition.value.storage_class
+      }
     }
+    dynamic "noncurrent_version_transition" {
+      for_each = length(keys(var.lifecycle_rule_noncurrent_version)) == 0 ? [] : [
+      var.lifecycle_rule_noncurrent_version]
 
-    noncurrent_version_transition {
-      days          = var.lifecycle_glacier_transition_days
-      storage_class = "GLACIER"
+      content {
+        days          = noncurrent_version_transition.value.days
+        storage_class = noncurrent_version_transition.value.storage_class
+      }
     }
   }
 
@@ -152,4 +160,37 @@ resource "aws_s3_bucket_public_access_block" "secure_s3_bucket" {
   restrict_public_buckets = true
 
   depends_on = [time_sleep.wait_for_secure_s3_bucket]
+}
+
+resource "aws_s3_bucket_policy" "secure_s3_bucket" {
+  bucket = aws_s3_bucket.secure_s3_bucket[0].id
+  policy = data.aws_iam_policy_document.secure_s3_bucket.json
+}
+
+data "aws_iam_policy_document" "secure_s3_bucket" {
+  statement {
+    sid    = "AllowSSLRequestsOnly"
+    effect = "Deny"
+
+    resources = [
+      aws_s3_bucket.secure_s3_bucket[0].arn,
+      "${aws_s3_bucket.secure_s3_bucket[0].arn}/*",
+    ]
+
+    actions = [
+    "s3:*"]
+
+    condition {
+      test     = "Bool"
+      variable = "aws:SecureTransport"
+      values = [
+      "false"]
+    }
+
+    principals {
+      type = "*"
+      identifiers = [
+      "*"]
+    }
+  }
 }
