@@ -21,6 +21,6 @@ variable "tags" {
   default = {
     Generator = "Terraform"
   }
-  type = map
+  type = map(any)
 
 }
