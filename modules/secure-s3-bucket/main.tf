@@ -42,9 +42,14 @@ resource "aws_s3_bucket" "access_log" {
 
     prefix = "/"
 
-    transition {
-      days          = var.lifecycle_glacier_transition_days
-      storage_class = "GLACIER"
+    dynamic "transition" {
+      for_each = length(keys(var.lifecycle_rule_current_version)) == 0 ? [] : [
+      var.lifecycle_rule_current_version]
+
+      content {
+        days          = transition.value.days
+        storage_class = transition.value.storage_class
+      }
     }
   }
 
