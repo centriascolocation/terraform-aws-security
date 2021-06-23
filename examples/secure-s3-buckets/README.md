@@ -32,6 +32,26 @@ module "s3_bucket_with_mfa_on_delete" {
 
 ```
 
+## Customized Lifecycle Rules For Objects
+
+If you will not define explicitly all objects will transition to GLACIER storage class after 90 days.
+You have the choice to customize these settings for current and non-current objects. In this example
+you see how to remove lifecycle rule for current objects and change rule for non-current objects.
+
+```hcl
+module "s3_bucket_with_lifecycle_customized" {
+  source      = "../../modules/secure-s3-bucket"
+  bucket_name = "secure-bucket-lifecycle-${data.aws_caller_identity.current.account_id}"
+  lifecycle_rule_current_version = {
+  }
+  lifecycle_rule_noncurrent_version = {
+    days          = 365
+    storage_class = "GLACIER"
+  }
+}
+
+```
+
 See [main.tf](https://github.com/centriascolocation/terraform-aws-security/blob/master/examples/secure-s3-buckets/main.tf) for details!
 
 ### See also
