@@ -15,12 +15,6 @@ variable "logging" {
   default     = {}
 }
 
-variable "lifecycle_glacier_transition_days" {
-  description = "The number of days after object creation when the object is archived into Glacier."
-  default     = 90
-  type        = number
-}
-
 variable "force_destroy" {
   description = "A boolean that indicates all objects should be deleted from the bucket so that the bucket can be destroyed without error. These objects are not recoverable."
   default     = false
@@ -39,5 +33,28 @@ variable "tags" {
     Generator = "Terraform"
   }
   type = map(any)
+}
 
+variable "mfa_delete" {
+  description = "Forces deletion of object to identities with mfa auth. Only the bucket owner (root account) can enable MFA delete"
+  default     = false
+  type        = bool
+}
+
+variable "lifecycle_rule_current_version" {
+  description = "change storage class after days for current objects"
+  type        = map(string)
+  default = {
+    days          = 90
+    storage_class = "GLACIER"
+  }
+}
+
+variable "lifecycle_rule_noncurrent_version" {
+  description = "change storage class after days for non-current objects (older versions)"
+  type        = map(string)
+  default = {
+    days          = 90
+    storage_class = "GLACIER"
+  }
 }
