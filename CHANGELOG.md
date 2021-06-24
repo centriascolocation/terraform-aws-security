@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+<a name="v1.5.2"></a>
+## [v1.5.2] - 2021-06-24
+
+- Customization For Lifecycle Rules - [#16](https://github.com/centriascolocation/terraform-aws-security/pull/16)
+- MFA On Delete Enabling Flag - [#16](https://github.com/centriascolocation/terraform-aws-security/pull/16)
+- Secure Transport Only Bucket Policy - [#16](https://github.com/centriascolocation/terraform-aws-security/pull/16)
+
 <a name="v1.5.1"></a>
 ## [v1.5.1] - 2021-05-28
 
