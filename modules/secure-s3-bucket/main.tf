@@ -139,6 +139,11 @@ resource "aws_s3_bucket" "secure_s3_bucket" {
         storage_class = noncurrent_version_transition.value.storage_class
       }
     }
+    expiration {
+      date                         = try(var.lifecycle_rule_expiration.date, null)
+      days                         = try(var.lifecycle_rule_expiration.days, null)
+      expired_object_delete_marker = try(var.lifecycle_rule_expiration.expired_object_delete_marker, null)
+    }
   }
 
   tags = merge(

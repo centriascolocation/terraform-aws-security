@@ -58,3 +58,13 @@ variable "lifecycle_rule_noncurrent_version" {
     storage_class = "GLACIER"
   }
 }
+
+variable "lifecycle_rule_expiration" {
+  description = "Specifies a period in the object's expire"
+  type        = map(string)
+  default = {
+    date                         = null
+    days                         = null
+    expired_object_delete_marker = null
+  }
+}
