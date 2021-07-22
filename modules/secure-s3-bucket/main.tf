@@ -140,9 +140,9 @@ resource "aws_s3_bucket" "secure_s3_bucket" {
       }
     }
     expiration {
-      date                         = try(var.lifecycle_rule_expiration.date, null)
-      days                         = try(var.lifecycle_rule_expiration.days, null)
-      expired_object_delete_marker = try(var.lifecycle_rule_expiration.expired_object_delete_marker, null)
+      date                         = var.lifecycle_rule_expiration.date
+      days                         = var.lifecycle_rule_expiration.days
+      expired_object_delete_marker = var.lifecycle_rule_expiration.expired_object_delete_marker
     }
   }
 
