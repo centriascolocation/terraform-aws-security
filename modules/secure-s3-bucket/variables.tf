@@ -35,6 +35,12 @@ variable "tags" {
   type = map(any)
 }
 
+variable "enable_versioning" {
+  description = "Whether to enable versioning for the bucket"
+  default     = true
+  type        = bool
+}
+
 variable "mfa_delete" {
   description = "Forces deletion of object to identities with mfa auth. Only the bucket owner (root account) can enable MFA delete"
   default     = false

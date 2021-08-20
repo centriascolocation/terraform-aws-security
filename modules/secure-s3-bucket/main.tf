@@ -112,7 +112,7 @@ resource "aws_s3_bucket" "secure_s3_bucket" {
   }
 
   versioning {
-    enabled    = true
+    enabled    = var.enable_versioning
     mfa_delete = var.mfa_delete
   }
 
