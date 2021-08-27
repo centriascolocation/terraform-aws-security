@@ -44,6 +44,7 @@ No modules.
 | <a name="input_lifecycle_rule_expiration"></a> [lifecycle\_rule\_expiration](#input\_lifecycle\_rule\_expiration) | Specifies a period in the object's expire | `map(string)` | <pre>{<br>  "date": null,<br>  "days": null<br>  "expired_object_delete_marker": null<br>}</pre> | no |
 | <a name="input_log_bucket_name"></a> [log\_bucket\_name](#input\_log\_bucket\_name) | The name of the S3 Logging bucket (3 - 63 characters long) | `string` | `""` | no |
 | <a name="input_logging"></a> [logging](#input\_logging) | Bucket Access Logging configuration. (map) | `map(string)` | `{}` | no |
+| <a name="enable_versioning"></a> [enable\_versioning](#input\_enable\_versioning) | Whether to enable versioning for the bucket | `bool` | `true` | no |
 | <a name="input_mfa_delete"></a> [mfa\_delete](#input\_mfa\_delete) | Forces deletion of object to identities with mfa auth. Only the bucket owner (root account) can enable MFA delete | `bool` | `false` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Add these tags to all resources created by this module | `map(any)` | <pre>{<br>  "Generator": "Terraform"<br>}</pre> | no |
 
