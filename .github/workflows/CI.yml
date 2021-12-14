@@ -50,3 +50,16 @@ jobs:
           terraform init -backend=false
           terraform validate
 
+      - name: Terraform Validate examples/complete
+        id: validate-examples-complete
+        working-directory: examples/complete
+        run: |
+          terraform init -backend=false
+          terraform validate
+
+      - name: Terraform Validate examples/secure-s3-buckets
+        id: validate-examples-secure-s3-buckets
+        working-directory: examples/secure-s3-buckets
+        run: |
+          terraform init -backend=false
+          terraform validate
