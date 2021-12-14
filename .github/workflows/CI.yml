@@ -8,8 +8,10 @@ jobs:
   terraform:
     name: "Terraform"
     strategy:
+      fail-fast: false
       matrix:
         os: [ ubuntu-latest, macos-11 ]
+        tfversions: [ 0.13.7, 1.0.11, 1.1.0 ]
     runs-on: ${{ matrix.os }}
 
     env:
@@ -21,7 +23,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 0.13.5
+          terraform_version: ${{ matrix.tfversions }}
 
       - name: Terraform Format
         id: fmt
