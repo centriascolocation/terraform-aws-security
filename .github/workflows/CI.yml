@@ -9,7 +9,11 @@ on:
 jobs:
   terraform:
     name: "Terraform"
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-11 ]
+    runs-on: ${{ matrix.os }}
+
     env:
       AWS_REGION: 'eu-central-1'
     steps:
