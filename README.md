@@ -42,7 +42,7 @@ This collection of reusable Terraform Modules aims to help with the following re
 
 ## Requirements
 
-Terraform Version 0.13 is required.
+Terraform Version 0.13 or newer is required.
 
 ## Usage
 
