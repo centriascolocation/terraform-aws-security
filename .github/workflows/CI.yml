@@ -2,14 +2,18 @@ name: "CI"
 
 on:
   push:
-    branches:
-      - master
   pull_request:
 
 jobs:
   terraform:
     name: "Terraform"
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, macos-11 ]
+        tfversions: [ 0.13.7, 1.0.11, 1.1.0 ]
+    runs-on: ${{ matrix.os }}
+
     env:
       AWS_REGION: 'eu-central-1'
     steps:
@@ -19,7 +23,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 0.13.5
+          terraform_version: ${{ matrix.tfversions }}
 
       - name: Terraform Format
         id: fmt
@@ -42,6 +46,20 @@ jobs:
       - name: Terraform Validate modules/cloudtrail
         id: validate-cloudtrail
         working-directory: modules/cloudtrail
+        run: |
+          terraform init -backend=false
+          terraform validate
+
+      - name: Terraform Validate examples/complete
+        id: validate-examples-complete
+        working-directory: examples/complete
+        run: |
+          terraform init -backend=false
+          terraform validate
+
+      - name: Terraform Validate examples/secure-s3-buckets
+        id: validate-examples-secure-s3-buckets
+        working-directory: examples/secure-s3-buckets
         run: |
           terraform init -backend=false
           terraform validate
