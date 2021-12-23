@@ -1,49 +1,37 @@
-## General Information
-
-> https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_aws_my-sec-creds-self-manage.html
-
 ## Requirements
 
-The following requirements are needed by this module:
-
-- terraform (>= 0.13)
-
-- aws (~> 3.0)
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 3.0 |
 
 ## Providers
 
-The following providers are used by this module:
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 3.0 |
 
-- aws (~> 3.0)
+## Modules
 
-## Required Inputs
+No modules.
 
-The following input variables are required:
+## Resources
 
-### policy\_description
+| Name | Type |
+|------|------|
+| [aws_iam_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_policy_document.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 
-Description: Description of the IAM Policy
+## Inputs
 
-Type: `string`
-
-### policy\_name
-
-Description: Name of the IAM Policy
-
-Type: `string`
-
-## Optional Inputs
-
-No optional input.
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_policy_description"></a> [policy\_description](#input\_policy\_description) | Description of the IAM Policy | `string` | n/a | yes |
+| <a name="input_policy_name"></a> [policy\_name](#input\_policy\_name) | Name of the IAM Policy | `string` | n/a | yes |
 
 ## Outputs
 
-The following outputs are exported:
-
-### this\_policy\_arn
-
-Description: the Policy ARN
-
-### this\_policy\_name
-
-Description: the Policy Name
+| Name | Description |
+|------|-------------|
+| <a name="output_this_policy_arn"></a> [this\_policy\_arn](#output\_this\_policy\_arn) | the Policy ARN |
+| <a name="output_this_policy_name"></a> [this\_policy\_name](#output\_this\_policy\_name) | the Policy Name |

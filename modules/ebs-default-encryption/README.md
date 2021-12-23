@@ -1,33 +1,32 @@
 ## Requirements
 
-The following requirements are needed by this module:
-
-- terraform (>= 0.13)
-
-- aws (~> 3.0)
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 3.0 |
 
 ## Providers
 
-The following providers are used by this module:
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 3.0 |
 
-- aws (~> 3.0)
+## Modules
 
-## Required Inputs
+No modules.
 
-No required input.
+## Resources
 
-## Optional Inputs
+| Name | Type |
+|------|------|
+| [aws_ebs_encryption_by_default.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ebs_encryption_by_default) | resource |
 
-The following input variables are optional (have default values):
+## Inputs
 
-### enabled
-
-Description: Whether to enable EBS volume encryption by default
-
-Type: `bool`
-
-Default: `true`
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_enabled"></a> [enabled](#input\_enabled) | Whether to enable EBS volume encryption by default | `bool` | `true` | no |
 
 ## Outputs
 
-No output.
+No outputs.

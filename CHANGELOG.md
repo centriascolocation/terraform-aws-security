@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+<a name="v1.5.3"></a>
+## [v1.5.3] - 2021-12
+
+- support darwin arm64 - [bug #22](https://github.com/centriascolocation/terraform-aws-security/pull/23)
+- re-format terraform-docs
+
 <a name="v1.5.2"></a>
 ## [v1.5.2] - 2021-06-24
 
