@@ -25,22 +25,27 @@ resource "aws_s3_bucket" "access_log" {
 
   bucket = var.log_bucket_name
 
-  acl = "log-delivery-write"
-
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
   force_destroy = var.force_destroy
 
-  lifecycle_rule {
-    id      = "auto-archive"
-    enabled = true
+  tags = merge(
+    var.tags,
+    {
+      "Name" = var.log_bucket_name
+    }
+  )
+}
 
-    prefix = "/"
+resource "aws_s3_bucket_lifecycle_configuration" "access_log_lc" {
+  count  = var.log_bucket_name != "" ? 1 : 0
+  bucket = aws_s3_bucket.access_log[0].id
+
+  rule {
+    id     = "auto-archive"
+    status = "Enabled"
+
+    filter {
+      prefix = "/"
+    }
 
     dynamic "transition" {
       for_each = length(keys(var.lifecycle_rule_current_version)) == 0 ? [] : [
@@ -52,13 +57,26 @@ resource "aws_s3_bucket" "access_log" {
       }
     }
   }
+}
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = var.log_bucket_name
+resource "aws_s3_bucket_server_side_encryption_configuration" "access_log_sse" {
+  count  = var.log_bucket_name != "" ? 1 : 0
+  bucket = aws_s3_bucket.access_log[0].id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
     }
-  )
+  }
+
+}
+
+resource "aws_s3_bucket_acl" "access_log_acl" {
+  count  = var.log_bucket_name != "" ? 1 : 0
+  bucket = aws_s3_bucket.access_log[0].id
+
+  acl = "log-delivery-write"
+
 }
 
 resource "aws_s3_bucket_policy" "access_log_policy" {
@@ -91,39 +109,43 @@ resource "aws_s3_bucket" "secure_s3_bucket" {
 
   bucket = var.bucket_name
 
-  acl           = "private"
+
   force_destroy = var.force_destroy
 
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
+  tags = merge(
+    var.tags,
+    {
+      "Name" = var.bucket_name
     }
+  )
+}
+
+resource "aws_s3_bucket_versioning" "secure_s3_bucket_versioning" {
+  count  = var.enabled ? 1 : 0
+  bucket = aws_s3_bucket.secure_s3_bucket[0].id
+
+  versioning_configuration {
+    status     = var.enable_versioning ? "Enabled" : "Disabled"
+    mfa_delete = var.mfa_delete ? "Enabled" : "Disabled"
   }
+}
 
-  dynamic "logging" {
-    for_each = length(keys(var.logging)) == 0 ? [] : [var.logging]
+resource "aws_s3_bucket_lifecycle_configuration" "secure_s3_bucket_lc" {
+  count  = var.enabled ? 1 : 0
+  bucket = aws_s3_bucket.secure_s3_bucket[0].id
 
-    content {
-      target_bucket = logging.value.target_bucket
-      target_prefix = lookup(logging.value, "target_prefix", null)
+  rule {
+    id     = "auto-archive"
+    status = "Enabled"
+
+    filter {
+      prefix = "/"
     }
-  }
-
-  versioning {
-    enabled    = var.enable_versioning
-    mfa_delete = var.mfa_delete
-  }
-
-  lifecycle_rule {
-    id      = "auto-archive"
-    enabled = true
-    prefix  = "/"
 
     dynamic "transition" {
       for_each = length(keys(var.lifecycle_rule_current_version)) == 0 ? [] : [
-      var.lifecycle_rule_current_version]
+        var.lifecycle_rule_current_version
+      ]
 
       content {
         days          = transition.value.days
@@ -132,13 +154,15 @@ resource "aws_s3_bucket" "secure_s3_bucket" {
     }
     dynamic "noncurrent_version_transition" {
       for_each = length(keys(var.lifecycle_rule_noncurrent_version)) == 0 ? [] : [
-      var.lifecycle_rule_noncurrent_version]
+        var.lifecycle_rule_noncurrent_version
+      ]
 
       content {
-        days          = noncurrent_version_transition.value.days
-        storage_class = noncurrent_version_transition.value.storage_class
+        noncurrent_days = noncurrent_version_transition.value.days
+        storage_class   = noncurrent_version_transition.value.storage_class
       }
     }
+
     expiration {
       date                         = var.lifecycle_rule_expiration.date
       days                         = var.lifecycle_rule_expiration.days
@@ -146,12 +170,26 @@ resource "aws_s3_bucket" "secure_s3_bucket" {
     }
   }
 
-  tags = merge(
-    var.tags,
-    {
-      "Name" = var.bucket_name
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "secure_s3_bucket_sse" {
+  count  = var.enabled ? 1 : 0
+  bucket = aws_s3_bucket.secure_s3_bucket[0].id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
     }
-  )
+  }
+}
+
+resource "aws_s3_bucket_logging" "secure_s3_bucket_logging" {
+  count  = var.enabled && length(keys(var.logging)) > 0 ? 1 : 0
+  bucket = aws_s3_bucket.secure_s3_bucket[0].id
+
+  target_bucket = aws_s3_bucket.access_log[0].id
+  target_prefix = lookup(var.logging, "target_prefix", null)
+
 }
 
 resource "time_sleep" "wait_for_secure_s3_bucket" {
@@ -170,6 +208,13 @@ resource "aws_s3_bucket_public_access_block" "secure_s3_bucket" {
   restrict_public_buckets = true
 
   depends_on = [time_sleep.wait_for_secure_s3_bucket]
+}
+
+resource "aws_s3_bucket_acl" "secure_s3_bucket_acl" {
+  count  = var.enabled ? 1 : 0
+  bucket = aws_s3_bucket.secure_s3_bucket[0].id
+
+  acl = "private"
 }
 
 resource "aws_s3_bucket_policy" "secure_s3_bucket" {
