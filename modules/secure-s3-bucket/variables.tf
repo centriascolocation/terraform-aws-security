@@ -82,6 +82,6 @@ variable "transition_default_minimum_object_size" {
 
   validation {
     condition     = contains(["all_storage_classes_128K", "varies_by_storage_class"], var.transition_default_minimum_object_size)
-    error_message = "transition_default_minimum_object_size must be either 'all_storage_classes_128K' or 'varies_by_storage_class'."
+    error_message = "The 'transition_default_minimum_object_size' must be either 'all_storage_classes_128K' or 'varies_by_storage_class'."
   }
 }
