@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+<a name="v.1.6.2"></a>
+## [v1.6.2] - 2025-02-17
+- the aws provider >= 5.70.0 added the argument `transition_default_minimum_object_size`
+- the aws provider >= 5.86.0 added a default value `all_storage_classes_128K`
+
 <a name="v1.5.3"></a>
 ## [v1.5.3] - 2021-12
 
