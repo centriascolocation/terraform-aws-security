@@ -74,3 +74,14 @@ variable "lifecycle_rule_expiration" {
     expired_object_delete_marker = null
   }
 }
+
+variable "transition_default_minimum_object_size" {
+  description = "The default minimum object size behavior for S3 lifecycle transition. Allowed values: all_storage_classes_128K, varies_by_storage_class."
+  type        = string
+  default     = "all_storage_classes_128K"
+
+  validation {
+    condition     = contains(["all_storage_classes_128K", "varies_by_storage_class"], var.transition_default_minimum_object_size)
+    error_message = "The 'transition_default_minimum_object_size' must be either 'all_storage_classes_128K' or 'varies_by_storage_class'."
+  }
+}

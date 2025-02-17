@@ -39,6 +39,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "access_log_lc" {
   count  = var.log_bucket_name != "" ? 1 : 0
   bucket = aws_s3_bucket.access_log[0].id
 
+  transition_default_minimum_object_size = var.transition_default_minimum_object_size
+
   rule {
     id     = "auto-archive"
     status = "Enabled"
@@ -133,6 +135,9 @@ resource "aws_s3_bucket_versioning" "secure_s3_bucket_versioning" {
 resource "aws_s3_bucket_lifecycle_configuration" "secure_s3_bucket_lc" {
   count  = var.enabled ? 1 : 0
   bucket = aws_s3_bucket.secure_s3_bucket[0].id
+
+  transition_default_minimum_object_size = var.transition_default_minimum_object_size
+
 
   rule {
     id     = "auto-archive"
