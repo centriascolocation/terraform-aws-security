@@ -53,7 +53,9 @@ Use a submodule source and pin a reviewed release. Omitting the Registry `versio
 constraint selects a Registry release, not the `master` branch. There is no root
 module to instantiate.
 
-The next release is **v2.0.0 (not published yet)**. Once published:
+Version **2.0.0** introduces breaking changes for existing deployments. Review
+the [upgrade guide](UPGRADING.md) before updating module versions. Pin a reviewed
+release rather than tracking the default branch:
 
 ```hcl
 module "security_iam_access_analyzer" {

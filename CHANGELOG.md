@@ -2,7 +2,7 @@
 
 All notable changes to this project are documented in English.
 
-## Unreleased — planned v2.0.0
+## [v2.0.0] - 2026-10-15
 
 ### Breaking changes
 
@@ -50,7 +50,7 @@ Lifecycle prefixes are opt-in: broadening a prefix can activate existing expiry
 or archival actions. Existing resource addresses must be preserved or explicitly
 migrated; do not apply policy deletion as a substitute for a state migration.
 Mock tests do not prove AWS log delivery, Organizations support or a safe customer
-migration. Publish `v2.0.0` only after CI and a reviewed consumer plan pass.
+migration. Review each consumer plan before deployment; publishing a release does not deploy AWS resources.
 
 <a name="v.1.6.2"></a>
 ## [v1.6.2] - 2025-02-17
