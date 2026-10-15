@@ -35,6 +35,7 @@ All notable changes to this project are documented in English.
 
 ### Fixed
 
+- Use Node.js 24 action runtimes and pin CI to Ubuntu 24.04 to avoid runner-image drift.
 - Omit empty S3 lifecycle expiration blocks when no expiration option is configured; retain explicit days, date and delete-marker settings.
 
 - Avoid Organizations lookups for standalone CloudTrail deployments.
