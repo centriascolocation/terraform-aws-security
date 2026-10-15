@@ -62,3 +62,47 @@ run "all_objects_lifecycle_prefix" {
     error_message = "Empty prefixes must match the whole bucket."
   }
 }
+
+run "no_expiration_by_default" {
+  command = plan
+  assert {
+    condition     = length(one(aws_s3_bucket_lifecycle_configuration.secure_s3_bucket_lc[0].rule).expiration) == 0
+    error_message = "Default null expiration settings must not emit an empty expiration block or expire objects."
+  }
+}
+
+run "empty_expiration_map" {
+  command = plan
+  variables { lifecycle_rule_expiration = {} }
+  assert {
+    condition     = length(one(aws_s3_bucket_lifecycle_configuration.secure_s3_bucket_lc[0].rule).expiration) == 0
+    error_message = "An empty expiration map must leave expiration disabled."
+  }
+}
+
+run "expiration_after_days" {
+  command = plan
+  variables { lifecycle_rule_expiration = { days = 30 } }
+  assert {
+    condition     = one(one(aws_s3_bucket_lifecycle_configuration.secure_s3_bucket_lc[0].rule).expiration).days == 30
+    error_message = "An explicit days-based expiration must be retained."
+  }
+}
+
+run "expiration_on_date" {
+  command = plan
+  variables { lifecycle_rule_expiration = { date = "2030-01-01T00:00:00Z" } }
+  assert {
+    condition     = one(one(aws_s3_bucket_lifecycle_configuration.secure_s3_bucket_lc[0].rule).expiration).date == "2030-01-01T00:00:00Z"
+    error_message = "An explicit date-based expiration must be retained."
+  }
+}
+
+run "expired_delete_marker_cleanup" {
+  command = plan
+  variables { lifecycle_rule_expiration = { expired_object_delete_marker = true } }
+  assert {
+    condition     = one(one(aws_s3_bucket_lifecycle_configuration.secure_s3_bucket_lc[0].rule).expiration).expired_object_delete_marker
+    error_message = "Explicit delete-marker cleanup must be retained."
+  }
+}
