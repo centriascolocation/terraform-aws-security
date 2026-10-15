@@ -112,5 +112,5 @@ confirm the next plan contains no unexpected changes.
 
 Mock tests do not prove live service delivery or a safe migration of existing
 state. Organization trails require the appropriate permissions and live testing.
-The legacy empty source lifecycle expiration block can still emit a provider
-warning. A non-empty `logging` map requires a valid `log_bucket_name`.
+Empty source expiration settings now omit the expiration block; no object expiry
+is enabled unless explicitly configured. A non-empty `logging` map requires a valid `log_bucket_name`.

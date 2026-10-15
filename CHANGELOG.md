@@ -35,6 +35,8 @@ All notable changes to this project are documented in English.
 
 ### Fixed
 
+- Omit empty S3 lifecycle expiration blocks when no expiration option is configured; retain explicit days, date and delete-marker settings.
+
 - Avoid Organizations lookups for standalone CloudTrail deployments.
 - Authorize S3 access-log delivery using a source-account/source-bucket-scoped policy.
 - Order Config delivery-channel creation after its policies and encryption configuration.
