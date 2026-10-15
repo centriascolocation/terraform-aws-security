@@ -1,15 +1,28 @@
+# security-hub
+
+Upgrade from 1.x: [v2 migration guide](../../UPGRADING.md).
+
+## Standards management
+
+`enable_default_standards` defaults to `true` for compatibility. Set it to
+`false` to manage subscriptions exclusively through Terraform. This does not
+remove subscriptions already enabled by AWS; import or disable those separately.
+`standards_create_timeout` defaults to `3m`.
+
+
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.0  |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 4.0  |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.0 |
 
 ## Modules
 
@@ -23,6 +36,7 @@ No modules.
 | [aws_securityhub_standards_subscription.aws_foundational](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/securityhub_standards_subscription) | resource |
 | [aws_securityhub_standards_subscription.cis](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/securityhub_standards_subscription) | resource |
 | [aws_securityhub_standards_subscription.pci_dss](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/securityhub_standards_subscription) | resource |
+| [aws_partition.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/partition) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 
 ## Inputs
@@ -31,11 +45,15 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_enable_aws_foundational_standard"></a> [enable\_aws\_foundational\_standard](#input\_enable\_aws\_foundational\_standard) | Whether to enable AWS Foundations standard | `bool` | `true` | no |
 | <a name="input_enable_cis_standard"></a> [enable\_cis\_standard](#input\_enable\_cis\_standard) | Whether to enable CIS standard | `bool` | `false` | no |
+| <a name="input_enable_default_standards"></a> [enable\_default\_standards](#input\_enable\_default\_standards) | Allow AWS to automatically enable default standards. Set false to manage subscriptions exclusively with Terraform. Existing subscriptions are not removed by changing this flag. | `bool` | `true` | no |
 | <a name="input_enable_pci_dss_standard"></a> [enable\_pci\_dss\_standard](#input\_enable\_pci\_dss\_standard) | Whether to enable PCI DSS standard | `bool` | `false` | no |
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | Set to false will not enable Security Hub at all | `bool` | `true` | no |
+| <a name="input_standards_create_timeout"></a> [standards\_create\_timeout](#input\_standards\_create\_timeout) | Maximum wait for standards initialization. | `string` | `"3m"` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | <a name="output_security_hub_id"></a> [security\_hub\_id](#output\_security\_hub\_id) | Security Hub Id |
+
+<!-- END_TF_DOCS -->

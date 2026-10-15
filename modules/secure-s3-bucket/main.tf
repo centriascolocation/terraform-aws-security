@@ -1,5 +1,9 @@
+data "aws_caller_identity" "current" {
+  count = var.enabled && var.log_bucket_name != "" ? 1 : 0
+}
+
 data "aws_iam_policy_document" "access_log_policy" {
-  count = var.log_bucket_name != "" ? 1 : 0
+  count = var.enabled && var.log_bucket_name != "" ? 1 : 0
 
   statement {
     actions = ["s3:*"]
@@ -18,10 +22,31 @@ data "aws_iam_policy_document" "access_log_policy" {
       identifiers = ["*"]
     }
   }
+  statement {
+    sid       = "S3ServerAccessLogDelivery"
+    effect    = "Allow"
+    actions   = ["s3:PutObject"]
+    resources = ["${aws_s3_bucket.access_log[0].arn}/${lookup(var.logging, "target_prefix", "")}*"]
+    principals {
+      type        = "Service"
+      identifiers = ["logging.s3.amazonaws.com"]
+    }
+    condition {
+      test     = "ArnEquals"
+      variable = "aws:SourceArn"
+      values   = [aws_s3_bucket.secure_s3_bucket[0].arn]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceAccount"
+      values   = [data.aws_caller_identity.current[0].account_id]
+    }
+  }
+
 }
 
 resource "aws_s3_bucket" "access_log" {
-  count = var.log_bucket_name != "" ? 1 : 0
+  count = var.enabled && var.log_bucket_name != "" ? 1 : 0
 
   bucket = var.log_bucket_name
 
@@ -36,7 +61,7 @@ resource "aws_s3_bucket" "access_log" {
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "access_log_lc" {
-  count  = var.log_bucket_name != "" ? 1 : 0
+  count  = var.enabled && var.log_bucket_name != "" ? 1 : 0
   bucket = aws_s3_bucket.access_log[0].id
 
   transition_default_minimum_object_size = var.transition_default_minimum_object_size
@@ -46,7 +71,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "access_log_lc" {
     status = "Enabled"
 
     filter {
-      prefix = "/"
+      prefix = var.access_log_lifecycle_prefix
     }
 
     dynamic "transition" {
@@ -62,7 +87,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "access_log_lc" {
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "access_log_sse" {
-  count  = var.log_bucket_name != "" ? 1 : 0
+  count  = var.enabled && var.log_bucket_name != "" ? 1 : 0
   bucket = aws_s3_bucket.access_log[0].id
 
   rule {
@@ -73,28 +98,31 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "access_log_sse" {
 
 }
 
-resource "aws_s3_bucket_acl" "access_log_acl" {
-  count  = var.log_bucket_name != "" ? 1 : 0
+resource "aws_s3_bucket_ownership_controls" "access_log" {
+  count  = var.enabled && var.log_bucket_name != "" ? 1 : 0
   bucket = aws_s3_bucket.access_log[0].id
 
-  acl = "log-delivery-write"
+  rule {
+    object_ownership = "BucketOwnerEnforced"
+  }
 
 }
 
 resource "aws_s3_bucket_policy" "access_log_policy" {
-  count = var.log_bucket_name != "" ? 1 : 0
+  count = var.enabled && var.log_bucket_name != "" ? 1 : 0
 
   bucket = aws_s3_bucket.access_log[0].id
   policy = data.aws_iam_policy_document.access_log_policy[0].json
 }
 
 resource "time_sleep" "wait_for_access_log_bucket" {
+  count           = var.enabled && var.log_bucket_name != "" ? 1 : 0
   depends_on      = [aws_s3_bucket.access_log]
   create_duration = "5s"
 }
 
 resource "aws_s3_bucket_public_access_block" "access_log" {
-  count = var.log_bucket_name != "" ? 1 : 0
+  count = var.enabled && var.log_bucket_name != "" ? 1 : 0
 
   bucket = aws_s3_bucket.access_log[0].id
 
@@ -144,7 +172,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "secure_s3_bucket_lc" {
     status = "Enabled"
 
     filter {
-      prefix = "/"
+      prefix = var.lifecycle_prefix
     }
 
     dynamic "transition" {
@@ -195,9 +223,12 @@ resource "aws_s3_bucket_logging" "secure_s3_bucket_logging" {
   target_bucket = aws_s3_bucket.access_log[0].id
   target_prefix = lookup(var.logging, "target_prefix", null)
 
+  depends_on = [aws_s3_bucket_policy.access_log_policy, aws_s3_bucket_ownership_controls.access_log]
+
 }
 
 resource "time_sleep" "wait_for_secure_s3_bucket" {
+  count           = var.enabled ? 1 : 0
   depends_on      = [aws_s3_bucket.secure_s3_bucket]
   create_duration = "5s"
 }
@@ -215,19 +246,23 @@ resource "aws_s3_bucket_public_access_block" "secure_s3_bucket" {
   depends_on = [time_sleep.wait_for_secure_s3_bucket]
 }
 
-resource "aws_s3_bucket_acl" "secure_s3_bucket_acl" {
+resource "aws_s3_bucket_ownership_controls" "secure_s3_bucket" {
   count  = var.enabled ? 1 : 0
   bucket = aws_s3_bucket.secure_s3_bucket[0].id
 
-  acl = "private"
+  rule {
+    object_ownership = "BucketOwnerEnforced"
+  }
 }
 
 resource "aws_s3_bucket_policy" "secure_s3_bucket" {
+  count  = var.enabled && var.manage_bucket_policy ? 1 : 0
   bucket = aws_s3_bucket.secure_s3_bucket[0].id
-  policy = data.aws_iam_policy_document.secure_s3_bucket.json
+  policy = data.aws_iam_policy_document.secure_s3_bucket[0].json
 }
 
 data "aws_iam_policy_document" "secure_s3_bucket" {
+  count = var.enabled ? 1 : 0
   statement {
     sid    = "AllowSSLRequestsOnly"
     effect = "Deny"
