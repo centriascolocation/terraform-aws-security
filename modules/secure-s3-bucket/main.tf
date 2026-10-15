@@ -196,10 +196,13 @@ resource "aws_s3_bucket_lifecycle_configuration" "secure_s3_bucket_lc" {
       }
     }
 
-    expiration {
-      date                         = var.lifecycle_rule_expiration.date
-      days                         = var.lifecycle_rule_expiration.days
-      expired_object_delete_marker = var.lifecycle_rule_expiration.expired_object_delete_marker
+    dynamic "expiration" {
+      for_each = anytrue([for key in ["date", "days", "expired_object_delete_marker"] : lookup(var.lifecycle_rule_expiration, key, null) != null]) ? [var.lifecycle_rule_expiration] : []
+      content {
+        date                         = lookup(expiration.value, "date", null)
+        days                         = lookup(expiration.value, "days", null)
+        expired_object_delete_marker = lookup(expiration.value, "expired_object_delete_marker", null)
+      }
     }
   }
 
