@@ -85,3 +85,21 @@ variable "transition_default_minimum_object_size" {
     error_message = "The 'transition_default_minimum_object_size' must be either 'all_storage_classes_128K' or 'varies_by_storage_class'."
   }
 }
+
+variable "manage_bucket_policy" {
+  description = "Manage the source bucket TLS policy. Set false only when another owner installs a complete policy including the TLS deny."
+  type        = bool
+  default     = true
+}
+
+variable "lifecycle_prefix" {
+  description = "Object-key prefix for source bucket lifecycle rules. Empty string matches all objects. Legacy default is preserved; / does not mean the bucket root."
+  type        = string
+  default     = "/"
+}
+
+variable "access_log_lifecycle_prefix" {
+  description = "Object-key prefix for access-log bucket lifecycle rules. Empty string matches all objects. Independent of the source bucket prefix."
+  type        = string
+  default     = "/"
+}

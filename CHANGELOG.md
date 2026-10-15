@@ -1,6 +1,53 @@
 # Change Log
 
-All notable changes to this project will be documented in this file.
+All notable changes to this project are documented in English.
+
+## Unreleased — planned v2.0.0
+
+### Breaking changes
+
+- Require Terraform >= 1.9 for CloudTrail, Config, Security Hub and secure-S3-bucket.
+- Require AWS Provider >= 6.0 for CloudTrail and Security Hub. Config requires
+  >= 5.30 and secure-S3-bucket requires >= 5.70; combined deployments require >= 6.0.
+- Replace managed S3 ACLs with `BucketOwnerEnforced` for source, access-log and
+  Config buckets. Migrate ACL-based access before upgrading existing buckets.
+- Add counted addresses to bucket-policy and wait resources. Existing state needs
+  the reviewed address migration described in the upgrade guide.
+- Return explicit metadata from `this_bucket` and `log_bucket` instead of complete
+  provider resource objects. Consumers of removed inline attributes must migrate.
+- Make `enabled = false` disable access-log resources as well as source resources.
+  Existing deployments relying on the former behavior may plan deletions.
+- Enforce TLS and scope CloudTrail delivery to the configured trail ARN. Shared
+  buckets must have one complete policy owner retaining every required statement.
+- Scope Config service delivery to the configured `aws_account_id` and enforce TLS.
+  Supply the actual account ID when upgrading; empty/default IDs cannot authorize delivery.
+
+### Added
+
+- Explicit source and access-log lifecycle-prefix inputs; both retain the legacy `/` default.
+- `manage_bucket_policy` and CloudTrail `bucket_policy_json` for single-owner policies.
+- Optional CloudTrail KMS and CloudWatch Logs delivery settings and verification outputs.
+- Config recorder-role override and bucket/recorder/policy outputs, preserving the
+  existing managed custom role when an external recorder role is selected.
+- Config resource selection, global-IAM recording and recording-frequency settings.
+- Security Hub automatic-standard control and configurable subscription-create timeout.
+- Mock-plan regression tests and a CI matrix for Terraform 1.9.8 and 1.15.0.
+
+### Fixed
+
+- Avoid Organizations lookups for standalone CloudTrail deployments.
+- Authorize S3 access-log delivery using a source-account/source-bucket-scoped policy.
+- Order Config delivery-channel creation after its policies and encryption configuration.
+- Use partition-aware CloudTrail and Security Hub ARNs.
+
+### Upgrade and validation
+
+Read [the v2 upgrade guide](UPGRADING.md) before applying.
+Lifecycle prefixes are opt-in: broadening a prefix can activate existing expiry
+or archival actions. Existing resource addresses must be preserved or explicitly
+migrated; do not apply policy deletion as a substitute for a state migration.
+Mock tests do not prove AWS log delivery, Organizations support or a safe customer
+migration. Publish `v2.0.0` only after CI and a reviewed consumer plan pass.
 
 <a name="v.1.6.2"></a>
 ## [v1.6.2] - 2025-02-17

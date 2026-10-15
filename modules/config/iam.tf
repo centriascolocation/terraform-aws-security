@@ -33,6 +33,21 @@ resource "aws_s3_bucket_policy" "config_bucket_policy" {
 data "aws_iam_policy_document" "bucket_policy" {
   version = "2012-10-17"
   statement {
+    sid       = "DenyInsecureTransport"
+    effect    = "Deny"
+    actions   = ["s3:*"]
+    resources = [aws_s3_bucket.config.arn, "${aws_s3_bucket.config.arn}/*"]
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "Bool"
+      variable = "aws:SecureTransport"
+      values   = ["false"]
+    }
+  }
+  statement {
     sid    = "AWSConfigBucketPermissionsCheck"
     effect = "Allow"
     principals {
@@ -41,6 +56,11 @@ data "aws_iam_policy_document" "bucket_policy" {
     }
     actions   = ["s3:GetBucketAcl"]
     resources = [aws_s3_bucket.config.arn]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceAccount"
+      values   = [var.aws_account_id]
+    }
   }
 
   statement {
@@ -52,6 +72,11 @@ data "aws_iam_policy_document" "bucket_policy" {
     }
     actions   = ["s3:ListBucket"]
     resources = [aws_s3_bucket.config.arn]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceAccount"
+      values   = [var.aws_account_id]
+    }
   }
 
   statement {
@@ -63,6 +88,11 @@ data "aws_iam_policy_document" "bucket_policy" {
     }
     actions   = ["s3:PutObject"]
     resources = ["${aws_s3_bucket.config.arn}/${var.config_bucket_key_prefix}/AWSLogs/${var.aws_account_id}/Config/*", ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceAccount"
+      values   = [var.aws_account_id]
+    }
     condition {
       test     = "StringEquals"
       values   = ["bucket-owner-full-control"]

@@ -19,9 +19,11 @@ resource "aws_s3_bucket" "config" {
   )
 }
 
-resource "aws_s3_bucket_acl" "config_acl" {
+resource "aws_s3_bucket_ownership_controls" "config" {
   bucket = aws_s3_bucket.config.id
-  acl    = "private"
+  rule {
+    object_ownership = "BucketOwnerEnforced"
+  }
 }
 
 resource "aws_s3_bucket_versioning" "config_versioning" {
@@ -81,12 +83,23 @@ resource "aws_s3_bucket_public_access_block" "config_bucket" {
 }
 
 resource "aws_config_configuration_recorder" "config" {
+  lifecycle {
+    precondition {
+      condition     = var.record_all_supported_resources ? length(var.resource_types) == 0 : length(var.resource_types) > 0
+      error_message = "Use either all supported resources with an empty resource_types set, or an explicit non-empty selection."
+    }
+  }
   name     = var.config_name
-  role_arn = aws_iam_role.config.arn
+  role_arn = var.recorder_role_arn == null ? aws_iam_role.config.arn : var.recorder_role_arn
+
+  recording_mode {
+    recording_frequency = var.recording_frequency
+  }
 
   recording_group {
-    all_supported                 = true
-    include_global_resource_types = true
+    all_supported                 = var.record_all_supported_resources
+    include_global_resource_types = var.include_global_resource_types
+    resource_types                = var.record_all_supported_resources ? null : var.resource_types
   }
 }
 
@@ -105,5 +118,5 @@ resource "aws_config_delivery_channel" "main" {
     delivery_frequency = var.config_delivery_frequency
   }
 
-  depends_on = [aws_config_configuration_recorder.config]
+  depends_on = [aws_config_configuration_recorder.config, aws_iam_role_policy_attachment.config, aws_s3_bucket_policy.config_bucket_policy, aws_s3_bucket_public_access_block.config_bucket, aws_s3_bucket_server_side_encryption_configuration.config_sse]
 }

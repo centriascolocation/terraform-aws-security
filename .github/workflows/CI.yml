@@ -1,65 +1,39 @@
-name: "CI"
-
-on:
-  push:
-  pull_request:
-
+name: CI
+on: [push, pull_request]
+permissions:
+  contents: read
 jobs:
   terraform:
-    name: "Terraform"
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, macos-11 ]
-        tfversions: [ 0.13.7, 1.0.11, 1.1.0 , 1.2.5]
-    runs-on: ${{ matrix.os }}
-
+        terraform: ["1.9.8", "1.15.0"]
     env:
-      AWS_REGION: 'eu-central-1'
+      TF_IN_AUTOMATION: "true"
+      AWS_REGION: eu-central-1
+      AWS_EC2_METADATA_DISABLED: "true"
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: ${{ matrix.tfversions }}
-
-      - name: Terraform Format
-        id: fmt
+          terraform_version: ${{ matrix.terraform }}
+          terraform_wrapper: false
+      - name: Check formatting
         run: terraform fmt -check -recursive
-
-      - name: Terraform Validate modules/secure-s3-bucket
-        id: validate-secure-s3-bucket
-        working-directory: modules/secure-s3-bucket
+      - name: Validate modules and examples
+        shell: bash
         run: |
-          terraform init -backend=false
-          terraform validate
-
-      - name: Terraform Validate modules/security-hub
-        id: validate-security-hub
-        working-directory: modules/security-hub
+          set -euo pipefail
+          for directory in modules/* examples/*; do
+            [ -d "$directory" ] || continue
+            terraform -chdir="$directory" init -backend=false -input=false
+            terraform -chdir="$directory" validate
+          done
+      - name: Run offline mock-plan tests
+        shell: bash
         run: |
-          terraform init -backend=false
-          terraform validate
-
-      - name: Terraform Validate modules/cloudtrail
-        id: validate-cloudtrail
-        working-directory: modules/cloudtrail
-        run: |
-          terraform init -backend=false
-          terraform validate
-
-      - name: Terraform Validate examples/complete
-        id: validate-examples-complete
-        working-directory: examples/complete
-        run: |
-          terraform init -backend=false
-          terraform validate
-
-      - name: Terraform Validate examples/secure-s3-buckets
-        id: validate-examples-secure-s3-buckets
-        working-directory: examples/secure-s3-buckets
-        run: |
-          terraform init -backend=false
-          terraform validate
+          set -euo pipefail
+          for module in secure-s3-bucket cloudtrail config security-hub; do
+            terraform -chdir="modules/$module" test
+          done
