@@ -21,3 +21,15 @@ variable "enable_aws_foundational_standard" {
   default     = true
   type        = bool
 }
+
+variable "enable_default_standards" {
+  description = "Allow AWS to automatically enable default standards. Set false to manage subscriptions exclusively with Terraform. Existing subscriptions are not removed by changing this flag."
+  type        = bool
+  default     = true
+}
+
+variable "standards_create_timeout" {
+  description = "Maximum wait for standards initialization."
+  type        = string
+  default     = "3m"
+}

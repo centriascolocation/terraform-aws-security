@@ -1,88 +1,77 @@
-data "aws_organizations_organization" "organization" {}
+data "aws_partition" "current" {}
+data "aws_region" "current" {}
+data "aws_organizations_organization" "organization" {
+  count                    = var.is_organization_trail ? 1 : 0
+  return_organization_only = true
+}
+
+locals {
+  trail_account_id = var.is_organization_trail ? data.aws_organizations_organization.organization[0].master_account_id : data.aws_caller_identity.current.account_id
+  bucket_arn       = "arn:${data.aws_partition.current.partition}:s3:::${var.bucket_name}"
+  trail_arn        = "arn:${data.aws_partition.current.partition}:cloudtrail:${data.aws_region.current.region}:${local.trail_account_id}:trail/${var.trail_name}"
+  delivery_paths = concat(
+    ["${local.bucket_arn}/AWSLogs/${local.trail_account_id}/*"],
+    var.is_organization_trail ? ["${local.bucket_arn}/AWSLogs/${data.aws_organizations_organization.organization[0].id}/*"] : []
+  )
+}
+
 resource "aws_s3_bucket_policy" "this" {
-  bucket     = var.bucket_name
-  depends_on = [var.bucket_name]
-  policy     = var.is_organization_trail ? data.aws_iam_policy_document.organizations_bucket_policy.json : data.aws_iam_policy_document.account_only_bucket_policy.json
+  count  = var.manage_bucket_policy ? 1 : 0
+  bucket = var.bucket_name
+  policy = data.aws_iam_policy_document.bucket_policy.json
 }
 
-data "aws_iam_policy_document" "account_only_bucket_policy" {
-  version = "2012-10-17"
+data "aws_iam_policy_document" "bucket_policy" {
   statement {
-    sid    = "AWSCloudTrailGetBucketAcl"
-    effect = "Allow"
+    sid       = "AllowSSLRequestsOnly"
+    effect    = "Deny"
+    actions   = ["s3:*"]
+    resources = [local.bucket_arn, "${local.bucket_arn}/*"]
     principals {
-      identifiers = [
-      "cloudtrail.amazonaws.com"]
-      type = "Service"
+      type        = "*"
+      identifiers = ["*"]
     }
+    condition {
+      test     = "Bool"
+      variable = "aws:SecureTransport"
+      values   = ["false"]
+    }
+  }
+
+  statement {
+    sid       = "AWSCloudTrailGetBucketAcl"
+    effect    = "Allow"
     actions   = ["s3:GetBucketAcl"]
-    resources = ["arn:aws:s3:::${var.bucket_name}"]
-  }
-
-  statement {
-    sid    = "AWSCloudTrailPutObject"
-    effect = "Allow"
-    principals {
-      identifiers = [
-      "cloudtrail.amazonaws.com"]
-      type = "Service"
-    }
-    actions   = ["s3:PutObject"]
-    resources = ["arn:aws:s3:::${var.bucket_name}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"]
-    condition {
-      test     = "StringEquals"
-      values   = ["bucket-owner-full-control"]
-      variable = "s3:x-amz-acl"
-    }
-  }
-}
-
-data "aws_iam_policy_document" "organizations_bucket_policy" {
-  statement {
-    sid       = "AWSCloudTrailAclCheck20210409"
-    effect    = "Allow"
-    resources = ["arn:aws:s3:::${var.bucket_name}"]
-    actions   = ["s3:GetBucketAcl"]
-
+    resources = [local.bucket_arn]
     principals {
       type        = "Service"
       identifiers = ["cloudtrail.amazonaws.com"]
     }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceArn"
+      values   = [local.trail_arn]
+    }
   }
 
   statement {
-    sid       = "AWSCloudTrailWrite2021040916"
+    sid       = "AWSCloudTrailPutObject"
     effect    = "Allow"
-    resources = ["arn:aws:s3:::${var.bucket_name}/AWSLogs/${data.aws_organizations_organization.organization.master_account_id}/*"]
     actions   = ["s3:PutObject"]
-
+    resources = local.delivery_paths
+    principals {
+      type        = "Service"
+      identifiers = ["cloudtrail.amazonaws.com"]
+    }
     condition {
       test     = "StringEquals"
       variable = "s3:x-amz-acl"
       values   = ["bucket-owner-full-control"]
     }
-
-    principals {
-      type        = "Service"
-      identifiers = ["cloudtrail.amazonaws.com"]
-    }
-  }
-
-  statement {
-    sid       = "AWSCloudTrailWrite2021040917"
-    effect    = "Allow"
-    resources = ["arn:aws:s3:::${var.bucket_name}/AWSLogs/${data.aws_organizations_organization.organization.id}/*"]
-    actions   = ["s3:PutObject"]
-
     condition {
       test     = "StringEquals"
-      variable = "s3:x-amz-acl"
-      values   = ["bucket-owner-full-control"]
-    }
-
-    principals {
-      type        = "Service"
-      identifiers = ["cloudtrail.amazonaws.com"]
+      variable = "aws:SourceArn"
+      values   = [local.trail_arn]
     }
   }
 }

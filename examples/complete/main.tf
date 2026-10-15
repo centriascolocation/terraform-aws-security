@@ -18,17 +18,18 @@ module "secure_bucket" {
 
 # 1.: CloudTrail Bucket:
 module "test_secure_s3_bucket" {
-  source          = "../../modules/secure-s3-bucket"
-  bucket_name     = "test-${data.aws_caller_identity.current.account_id}-cloudtrail-logs"
-  log_bucket_name = "test-${data.aws_caller_identity.current.account_id}-cloudtrail-bucket-accesslogs"
+  manage_bucket_policy = false
+  source               = "../../modules/secure-s3-bucket"
+  bucket_name          = "test-${data.aws_caller_identity.current.account_id}-cloudtrail-logs"
+  log_bucket_name      = "test-${data.aws_caller_identity.current.account_id}-cloudtrail-bucket-accesslogs"
 }
 
 # 2.: CloudTrail itself:
 module "test_cloudtrail" {
-  source                = "../../modules/cloudtrail"
-  trail_name            = "test-${data.aws_caller_identity.current.account_id}-trail"
-  bucket_name           = "test-${data.aws_caller_identity.current.account_id}-cloudtrail-logs"
-  cloudtrail_depends_on = [module.test_secure_s3_bucket.this_bucket]
+  source      = "../../modules/cloudtrail"
+  trail_name  = "test-${data.aws_caller_identity.current.account_id}-trail"
+  bucket_name = "test-${data.aws_caller_identity.current.account_id}-cloudtrail-logs"
+  depends_on  = [module.test_secure_s3_bucket]
 }
 
 # Add an IAM group and allow users of that group to manage their password, accesskeys and ssh public keys:
