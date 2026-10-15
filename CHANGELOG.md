@@ -35,6 +35,8 @@ All notable changes to this project are documented in English.
 
 ### Fixed
 
+- Use Node.js 24 action runtimes and pin CI to Ubuntu 24.04 to avoid runner-image drift.
+
 - Avoid Organizations lookups for standalone CloudTrail deployments.
 - Authorize S3 access-log delivery using a source-account/source-bucket-scoped policy.
 - Order Config delivery-channel creation after its policies and encryption configuration.
