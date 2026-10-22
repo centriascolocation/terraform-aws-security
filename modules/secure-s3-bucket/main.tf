@@ -91,6 +91,9 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "access_log_sse" {
   bucket = aws_s3_bucket.access_log[0].id
 
   rule {
+    blocked_encryption_types = ["SSE-C"]
+    bucket_key_enabled       = false
+
     apply_server_side_encryption_by_default {
       sse_algorithm = "AES256"
     }
@@ -213,6 +216,9 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "secure_s3_bucket_
   bucket = aws_s3_bucket.secure_s3_bucket[0].id
 
   rule {
+    blocked_encryption_types = ["SSE-C"]
+    bucket_key_enabled       = false
+
     apply_server_side_encryption_by_default {
       sse_algorithm = "AES256"
     }
